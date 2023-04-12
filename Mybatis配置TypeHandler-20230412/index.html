@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html 
+	lang="zh_CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+<link rel="stylesheet" href="/css/layout.css">
+
+		
+		<title> 为MyBatis配置TypeHandler实现列表的存放 -  Cmosite</title>
+		<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+		<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+		<!-- lazyload -->
+		<script src="https://unpkg.com/lazysizes@5.1.0/lazysizes.min.js"></script>
+		<!-- smooth-scrolling -->
+		<script src="https://unpkg.com/smooth-scrolling.js@1.0.0"></script>
+		<!-- highlight -->
+		<link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/atom-one-dark.min.css" />
+		<script src="//unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+		<!-- 预置 kiraicon -->
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		
+			<link rel="stylesheet" href="//at.alicdn.com/t/font_3299330_el19bsi97h8.css" crossorigin />
+		
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		<link
+			rel="shortcut icon"
+			href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			type="image/png"
+		/>
+		<link rel="stylesheet" href="/deps/css/APlayer.min.css">
+		
+		<script src="/deps/js/APlayer.min.js"></script>
+		<script src="/deps/js/Meting.min.js"></script>
+	<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<div
+			class="kira-background"
+			style="background-image: url('https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/background.jpg')"
+		></div>
+		<div class="kira-header">
+    <a
+        class="kira-drawer-button mdui-ripple"
+        title="导航栏"
+        onclick="document.querySelector('.kira-sidebar-modal').classList.add('show');document.querySelector('.kira-sidebar#sidebar').classList.add('show');"
+    >
+        <i class="kirafont icon-menu"></i>
+    </a>
+    <a href="/" title="Cmosite">
+        <img
+			src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			alt="Cmos"
+		/>
+    </a>
+</div>
+		<div class="kira-body">
+			<div class="kira-sidebar" id="sidebar">
+	<div class="kira-avatar mdui-ripple">
+		<a target="_blank" rel="noopener" href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png" title="Cmos">
+			<img
+				src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+				alt="Cmos"
+			/>
+		</a>
+	</div>
+	<div class="kira-count">
+		<div><span>文章</span>6</div>
+		<div><span>标签</span>4</div>
+		<div><span>分类</span>0</div>
+	</div>
+	<div class="kira-list">
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/"
+			title="回到首页"
+		>
+			<i
+				class="kirafont icon-home"
+			></i>
+			<div class="kira-list-item-content">回到首页</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/archive.html"
+			title="文章归档"
+		>
+			<i
+				class="kirafont icon-container"
+			></i>
+			<div class="kira-list-item-content">文章归档</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/about.html"
+			title="关于本人"
+		>
+			<i
+				class="kirafont icon-user"
+			></i>
+			<div class="kira-list-item-content">关于本人</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/friends.html"
+			title="我的朋友"
+		>
+			<i
+				class="kirafont icon-team"
+			></i>
+			<div class="kira-list-item-content">我的朋友</div>
+		</a>
+		
+	</div>
+	<aside id="kira-sidebar">
+		 <div class="kira-widget-wrap">
+	<div class="kira-widget kira-social">
+		<a
+			class="mdui-ripple"
+			href="/qqinfo.html"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ'}"
+			style="
+				color: rgb(49, 174, 255);
+				background-color: rgba(49, 174, 255, .1);
+			"
+		>
+			<i
+				class="kirafont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/18437473"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .15);
+			"
+		>
+			<i
+				class="kirafont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/CmosQAQ"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .15);
+			"
+		>
+			<i
+				class="kirafont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/CmosQAQ"
+			target="_blank"
+			mdui-tooltip="{content: 'Gitee'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-gitee"
+			></i> </a
+		>
+	</div>
+</div>
+    
+<div class="kira-widget-wrap">
+	<div id="randomtagcloud" class="kira-widget tagcloud kira-rainbow"><a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/%E6%97%A0%E7%94%A8/" style="font-size: 20px;">无用</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 20px;">英语</a></div>
+	
+</div>
+
+  
+<div class="kira-widget-wrap">
+	<h3 class="kira-widget-title">文章归档</h3>
+	<div class="kira-widget">
+		<ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">6</span></li></ul>
+	</div>
+</div>
+
+ 
+	</aside>
+	<div class="kira-copyright">
+		&copy; 2023
+		<a href="/">Cmos</a
+		>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> &
+		<!-- TODO: github 链接 -->
+		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
+		<br />
+		
+		
+	</div>
+</div>
+<div class="kira-sidebar-modal" id="sidebar-modal" onclick="(function(self) {
+	self.classList.remove('show');
+	document.querySelector('.kira-sidebar.show#sidebar').classList.remove('show');
+})(this)"></div>
+			<div class="kira-content">
+				<div id="kira-top-header"></div>
+				<div class="kira-main-content">
+					
+<link rel="stylesheet" href="/css/kira-image.css">
+
+<script src="/js/kira-image.js"></script>
+<div class="kira-image">
+    <div class="kira-image-modal">
+        <div class="kira-image-header">
+            <div class="kira-image-counter"></div>
+            <div class="kira-image-title"></div>
+            <div class="kira-image-operation">
+                <div class="kira-image-operation-button" id="kira-image-operation-button-zoom">
+                    <i class="kirafont icon-zoom-in"></i>
+                </div>
+                <div class="kira-image-operation-button" id="kira-image-operation-button-close">
+                    <i class="kirafont icon-close"></i>
+                </div>
+            </div>
+        </div>
+        <div class="kira-image-container">
+            <div class="kira-image-prev-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-left"></i>
+                </div>
+            </div>
+            <div class="kira-image-list">
+                <div class="kira-image-prev">
+                    <img />
+                </div>
+                <div class="kira-image-now">
+                    <img />
+                </div>
+                <div class="kira-image-next">
+                    <img />
+                </div>
+            </div>
+            <div class="kira-image-next-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kira-post">
+	<article>
+		
+		<div class="kira-post-cover">
+			<img
+				data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/230412.png"
+				data-sizes="auto"
+				alt="为MyBatis配置TypeHandler实现列表的存放"
+				class="lazyload kira-post-cover-image disabled-kira-image"
+			/>
+			<h1>为MyBatis配置TypeHandler实现列表的存放</h1>
+		</div>
+		
+		<div class="kira-post-meta kira-rainbow" style="margin:10px 0!important;">
+			<a><i class="kirafont icon-calendar-fill"></i>2023年04月12日</a>
+			<a><i class="kirafont icon-areachart"></i>777 字</a>
+			<a><i class="kirafont icon-time-circle-fill"></i>大概 4 分钟</a>
+		</div>
+		<h2><span id="为mybatis配置typehandler实现列表的存放">为MyBatis配置TypeHandler实现列表的存放</span></h2><p>Domain中的数据类中存放列表，无法直接存放到数据库中。使用Json数据存放在读写的时候又过于复杂。学习使用MyBatis自带的TypeHandler，即类型转换器,在mybatis中用于实现java类型和JDBC类型的相互转换，可以使用SQL语句直接存放List，同理也可以用于配置数组。</p>
+<h4><span id="数据类">数据类</span></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> List&lt;String&gt; manageShopId;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4><span id="自定义typehandler">自定义TypeHandler</span></h4><p>自定义TypeHandler，直接继承MyBatis内已经定义好的TypeHandler即可，实现其实现其定义的4个抽象方法</p>
+<p>第一个抽象方法setParameter，是设置作为参数向数据库存放的方法，i是参数在SQL语句中的下标，parameter是参数，jdbcType是数据库类型，在上方注解中，我们使用以下两个注解来绑定该解释器的转换关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@MappedJdbcTypes(JdbcType.VARCHAR)</span><br><span class="hljs-meta">@MappedTypes(List.class)</span><br></code></pre></td></tr></table></figure>
+<p>后面的两个抽象方法，getResult的方法，分别是使用列名和下标，从数据库中返回结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@MappedJdbcTypes(JdbcType.VARCHAR)</span><br><span class="hljs-meta">@MappedTypes(List.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StringListToVarcharTypeHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">TypeHandler</span>&lt;List&lt;String&gt;&gt; &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setParameter</span><span class="hljs-params">(PreparedStatement preparedStatement, <span class="hljs-type">int</span> i, List&lt;String&gt; strings, JdbcType jdbcType)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-type">StringBuffer</span> <span class="hljs-variable">stringBuffer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuffer</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; strings.size(); j++) &#123;<br>            <span class="hljs-keyword">if</span> (j == strings.size() - <span class="hljs-number">1</span>) &#123;<br>                stringBuffer.append(strings.get(j));<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                stringBuffer.append(strings.get(j)).append(<span class="hljs-string">&quot;,&quot;</span>);<br>            &#125;<br>        &#125;<br>        preparedStatement.setString(i, stringBuffer.toString());<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getResult</span><span class="hljs-params">(ResultSet resultSet, String colname)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">resultString</span> <span class="hljs-operator">=</span> resultSet.getString(colname);<br>        <span class="hljs-keyword">if</span> (StringUtils.isNotEmpty(resultString)) &#123;<br>            <span class="hljs-keyword">return</span> Arrays.asList(resultString.split(<span class="hljs-string">&quot;,&quot;</span>));<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getResult</span><span class="hljs-params">(ResultSet resultSet, <span class="hljs-type">int</span> i)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getResult</span><span class="hljs-params">(CallableStatement callableStatement, <span class="hljs-type">int</span> i)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4><span id="在mapper中的配置">在Mapper中的配置</span></h4><p>配置完上述的TypeHandler后，要在Mapper中也为相关的参数配置此解释器。下面以使用MyBatis进行注解开发为例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//这是使用该元素作为参数的情况</span><br><span class="hljs-meta">@Insert(&quot;insert into user (username, password,manageShopId) VALUES (#&#123;username&#125;,#&#123;password,&#125;,#&#123;manageShopId,typeHandler=org.zjnu.a33.utils.StringListToVarcharTypeHandler&#125;)&quot;)</span><br><span class="hljs-type">boolean</span> <span class="hljs-title function_">setUser</span><span class="hljs-params">(User user)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-comment">//这是使用该元素作为返回值的情况</span><br><span class="hljs-meta">@Select(&quot;select * from user where username = #&#123;username&#125;&quot;)</span><br><span class="hljs-meta">@Results(&#123;</span><br><span class="hljs-meta">        @Result(property=&quot;username&quot;, column=&quot;username&quot;),</span><br><span class="hljs-meta">        @Result(property=&quot;password&quot;, column=&quot;password&quot;),</span><br><span class="hljs-meta">        @Result(property=&quot;manageShopId&quot;, column=&quot;manageShopId&quot;, typeHandler= StringListToVarcharTypeHandler.class)</span><br><span class="hljs-meta">&#125;)</span><br>User <span class="hljs-title function_">getUserByUsername</span><span class="hljs-params">(String username)</span>;<br></code></pre></td></tr></table></figure>
+
+<h4><span id="list转换varchar的typehandler">List<integer>转换Varchar的TypeHandler</integer></span></h4><p>这是List&lt;Integer与Varchar类型的转换，如果有其他需要转换的类型，也可以自定义TypeHandler。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@MappedJdbcTypes(JdbcType.VARCHAR)</span><br><span class="hljs-meta">@MappedTypes(List.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">IntegerListTypeHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseTypeHandler</span>&lt;List&lt;Integer&gt;&gt; &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setNonNullParameter</span><span class="hljs-params">(PreparedStatement ps, <span class="hljs-type">int</span> i, List&lt;Integer&gt; parameter, JdbcType jdbcType)</span><br>            <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-keyword">if</span> (parameter != <span class="hljs-literal">null</span> &amp;&amp; parameter.size() &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span>parameter.stream().map(e -&gt; e.toString()).collect(Collectors.joining(<span class="hljs-string">&quot;,&quot;</span>));<br>            ps.setString(i, str);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            ps.setString(i, <span class="hljs-string">&quot;&quot;</span>);<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">getNullableResult</span><span class="hljs-params">(ResultSet rs, String columnName)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">columnValues</span> <span class="hljs-operator">=</span> rs.getString(columnName);<br>        <span class="hljs-keyword">if</span> (columnValues!=<span class="hljs-literal">null</span> &amp;&amp; !columnValues.equals(<span class="hljs-string">&quot;&quot;</span>))&#123;<br>            String[] split = columnValues.split(<span class="hljs-string">&quot;,&quot;</span>);<br>            List&lt;Integer&gt; list = Arrays.asList(split).stream().map(e -&gt; Integer.parseInt(e)).collect(Collectors.toList());<br>            <span class="hljs-keyword">return</span> list;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;Integer&gt;();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">getNullableResult</span><span class="hljs-params">(ResultSet rs, <span class="hljs-type">int</span> columnIndex)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">getNullableResult</span><span class="hljs-params">(CallableStatement cs, <span class="hljs-type">int</span> columnIndex)</span> <span class="hljs-keyword">throws</span> SQLException &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+	</article>
+
+	 
+    <div class="kira-post-copyright">
+        <strong>本文作者：</strong>Cmos<br>
+        <strong>本文链接：</strong><a href="https://www.cmosite.cn/Mybatis%E9%85%8D%E7%BD%AETypeHandler-20230412/" title="https:&#x2F;&#x2F;www.cmosite.cn&#x2F;Mybatis配置TypeHandler-20230412&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;www.cmosite.cn&#x2F;Mybatis配置TypeHandler-20230412&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+  
+	<div class="kira-post-nav">
+		<nav class="post-nav">
+			
+		</nav>
+	</div>
+	
+	<div class="kira-post-meta kira-rainbow">
+		
+		
+			<a class="kirafont icon-tag-fill -none-link" href="/tags/Java/" rel="tag">Java</a>
+		
+	</div>
+	
+		<script src="/js/kira-code-copy.js"></script>
+	
+	
+	<div class="kira-post-footer">
+</div>
+	
+</div>
+
+				</div>
+			</div>
+			<div class="kira-right-column">
+	<a onclick="document.querySelector('#kira-top-header').scrollIntoView({behavior: 'smooth'});" class="kira-backtotop" aria-label="回到顶部" title="回到顶部">
+		<button class="mdui-fab mdui-ripple">
+			<i class="kirafont icon-caret-up"></i>
+		</button>
+	</a>
+</div>
+
+		</div>
+	</body>
+</html>
