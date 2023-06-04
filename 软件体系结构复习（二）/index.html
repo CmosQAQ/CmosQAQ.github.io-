@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html 
+	lang="zh_CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+<link rel="stylesheet" href="/css/layout.css">
+
+		
+		<title> 软件体系结构期末复习（二） -  Cmosite</title>
+		<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+		<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+		<!-- lazyload -->
+		<script src="https://unpkg.com/lazysizes@5.1.0/lazysizes.min.js"></script>
+		<!-- smooth-scrolling -->
+		<script src="https://unpkg.com/smooth-scrolling.js@1.0.0"></script>
+		<!-- highlight -->
+		<link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/atom-one-dark.min.css" />
+		<script src="//unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+		<!-- 预置 kiraicon -->
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		
+			<link rel="stylesheet" href="//at.alicdn.com/t/font_3299330_el19bsi97h8.css" crossorigin />
+		
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		<link
+			rel="shortcut icon"
+			href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			type="image/png"
+		/>
+		<link rel="stylesheet" href="/deps/css/APlayer.min.css">
+		
+		<script src="/deps/js/APlayer.min.js"></script>
+		<script src="/deps/js/Meting.min.js"></script>
+	<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<div
+			class="kira-background"
+			style="background-image: url('https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/background.jpg')"
+		></div>
+		<div class="kira-header">
+    <a
+        class="kira-drawer-button mdui-ripple"
+        title="导航栏"
+        onclick="document.querySelector('.kira-sidebar-modal').classList.add('show');document.querySelector('.kira-sidebar#sidebar').classList.add('show');"
+    >
+        <i class="kirafont icon-menu"></i>
+    </a>
+    <a href="/" title="Cmosite">
+        <img
+			src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			alt="Cmos"
+		/>
+    </a>
+</div>
+		<div class="kira-body">
+			<div class="kira-sidebar" id="sidebar">
+	<div class="kira-avatar mdui-ripple">
+		<a target="_blank" rel="noopener" href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png" title="Cmos">
+			<img
+				src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+				alt="Cmos"
+			/>
+		</a>
+	</div>
+	<div class="kira-count">
+		<div><span>文章</span>8</div>
+		<div><span>标签</span>4</div>
+		<div><span>分类</span>0</div>
+	</div>
+	<div class="kira-list">
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/"
+			title="回到首页"
+		>
+			<i
+				class="kirafont icon-home"
+			></i>
+			<div class="kira-list-item-content">回到首页</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/archive.html"
+			title="文章归档"
+		>
+			<i
+				class="kirafont icon-container"
+			></i>
+			<div class="kira-list-item-content">文章归档</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/about.html"
+			title="关于本人"
+		>
+			<i
+				class="kirafont icon-user"
+			></i>
+			<div class="kira-list-item-content">关于本人</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/friends.html"
+			title="我的朋友"
+		>
+			<i
+				class="kirafont icon-team"
+			></i>
+			<div class="kira-list-item-content">我的朋友</div>
+		</a>
+		
+	</div>
+	<aside id="kira-sidebar">
+		 <div class="kira-widget-wrap">
+	<div class="kira-widget kira-social">
+		<a
+			class="mdui-ripple"
+			href="/qqinfo.html"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ'}"
+			style="
+				color: rgb(49, 174, 255);
+				background-color: rgba(49, 174, 255, .1);
+			"
+		>
+			<i
+				class="kirafont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/18437473"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .15);
+			"
+		>
+			<i
+				class="kirafont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/CmosQAQ"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .15);
+			"
+		>
+			<i
+				class="kirafont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/CmosQAQ"
+			target="_blank"
+			mdui-tooltip="{content: 'Gitee'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-gitee"
+			></i> </a
+		>
+	</div>
+</div>
+    
+<div class="kira-widget-wrap">
+	<div id="randomtagcloud" class="kira-widget tagcloud kira-rainbow"><a href="/tags/%E6%97%A0%E7%94%A8/" style="font-size: 15px;">无用</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 20px;">编程</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 15px;">英语</a></div>
+	
+</div>
+
+  
+<div class="kira-widget-wrap">
+	<h3 class="kira-widget-title">文章归档</h3>
+	<div class="kira-widget">
+		<ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">8</span></li></ul>
+	</div>
+</div>
+
+ 
+	</aside>
+	<div class="kira-copyright">
+		&copy; 2023
+		<a href="/">Cmos</a
+		>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> &
+		<!-- TODO: github 链接 -->
+		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
+		<br />
+		
+		
+	</div>
+</div>
+<div class="kira-sidebar-modal" id="sidebar-modal" onclick="(function(self) {
+	self.classList.remove('show');
+	document.querySelector('.kira-sidebar.show#sidebar').classList.remove('show');
+})(this)"></div>
+			<div class="kira-content">
+				<div id="kira-top-header"></div>
+				<div class="kira-main-content">
+					
+<link rel="stylesheet" href="/css/kira-image.css">
+
+<script src="/js/kira-image.js"></script>
+<div class="kira-image">
+    <div class="kira-image-modal">
+        <div class="kira-image-header">
+            <div class="kira-image-counter"></div>
+            <div class="kira-image-title"></div>
+            <div class="kira-image-operation">
+                <div class="kira-image-operation-button" id="kira-image-operation-button-zoom">
+                    <i class="kirafont icon-zoom-in"></i>
+                </div>
+                <div class="kira-image-operation-button" id="kira-image-operation-button-close">
+                    <i class="kirafont icon-close"></i>
+                </div>
+            </div>
+        </div>
+        <div class="kira-image-container">
+            <div class="kira-image-prev-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-left"></i>
+                </div>
+            </div>
+            <div class="kira-image-list">
+                <div class="kira-image-prev">
+                    <img />
+                </div>
+                <div class="kira-image-now">
+                    <img />
+                </div>
+                <div class="kira-image-next">
+                    <img />
+                </div>
+            </div>
+            <div class="kira-image-next-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kira-post">
+	<article>
+		
+		<div class="kira-post-cover">
+			<img
+				data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/230602.jpg"
+				data-sizes="auto"
+				alt="软件体系结构期末复习（二）"
+				class="lazyload kira-post-cover-image disabled-kira-image"
+			/>
+			<h1>软件体系结构期末复习（二）</h1>
+		</div>
+		
+		<div class="kira-post-meta kira-rainbow" style="margin:10px 0!important;">
+			<a><i class="kirafont icon-calendar-fill"></i>2023年06月05日</a>
+			<a><i class="kirafont icon-areachart"></i>2.4k 字</a>
+			<a><i class="kirafont icon-time-circle-fill"></i>大概 10 分钟</a>
+		</div>
+		<p>此文章仅用作期末复习</p>
+<h3><span id="一-aggregate-pattern聚合模式">一、Aggregate Pattern聚合模式</span></h3><p>Aggregate Pattern是一种设计模式，在这种模式中，集合对象（如List、Map等）可以用统一的方式来访问和处理其中的元素，而不用关心具体的实现细节。这种模式可以简化代码的复杂度，提高代码的可维护性和可扩展性。</p>
+<p>Aggregate Pattern的核心思想是将集合对象和其中的元素进行分离，从而可以对集合对象进行统一的处理，而不用先对集合对象进行遍历，再对每个元素进行处理。</p>
+<p>Python代码举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Book</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, title, author, price</span>):<br>        self.title = title<br>        self.author = author<br>        self.price = price<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BookCollection</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.books = []<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_book</span>(<span class="hljs-params">self, book</span>):<br>        self.books.append(book)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_total_price</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(book.price <span class="hljs-keyword">for</span> book <span class="hljs-keyword">in</span> self.books)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_author_books</span>(<span class="hljs-params">self, author</span>):<br>        <span class="hljs-keyword">return</span> [book.title <span class="hljs-keyword">for</span> book <span class="hljs-keyword">in</span> self.books <span class="hljs-keyword">if</span> book.author == author]<br><br><span class="hljs-comment"># 创建一个书的集合</span><br>collection = BookCollection()<br><br><span class="hljs-comment"># 添加几本书</span><br>collection.add_book(Book(<span class="hljs-string">&quot;The Lord of the Rings&quot;</span>, <span class="hljs-string">&quot;J.R.R. Tolkien&quot;</span>, <span class="hljs-number">20</span>))<br>collection.add_book(Book(<span class="hljs-string">&quot;The Hobbit&quot;</span>, <span class="hljs-string">&quot;J.R.R. Tolkien&quot;</span>, <span class="hljs-number">15</span>))<br>collection.add_book(Book(<span class="hljs-string">&quot;Harry Potter&quot;</span>, <span class="hljs-string">&quot;J.K. Rowling&quot;</span>, <span class="hljs-number">18</span>))<br><br><span class="hljs-comment"># 计算书的总价值</span><br>total_price = collection.get_total_price()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Total price:&quot;</span>, total_price)<br><br><span class="hljs-comment"># 获取某个作者的书名</span><br>author_books = collection.get_author_books(<span class="hljs-string">&quot;J.R.R. Tolkien&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Books by J.R.R. Tolkien:&quot;</span>, author_books)<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，Book表示一本书，BookCollection表示一个包含多本书的集合，可以对集合中的书进行总价值计算和按作者查找操作。使用Aggregate Pattern的好处是，BookCollection可以对书进行统一的操作，而不用关心每本书的具体实现细节。</p>
+<h3><span id="二-events-pattern事件模式">二、Events Pattern事件模式</span></h3><p>Events Pattern是一种设计模式，用于处理事件。它使得程序能够在运行时监听和响应事件，而不需要显式地调用函数或方法。</p>
+<p>其作用和意义在于：</p>
+<ol>
+<li><p>使程序更加灵活和可扩展。使用Events Pattern可以将不同模块间的耦合度降低，增加模块的独立性和复用性。</p>
+</li>
+<li><p>使程序更加易于测试。使用Events Pattern可以更方便地测试程序的各个部分，降低测试的维护成本。</p>
+</li>
+<li><p>使程序更加易于理解和维护。使用Events Pattern可以将大量的逻辑分散到各个事件处理函数中，使得程序逻辑更加清晰。</p>
+</li>
+</ol>
+<p>以下是一个简单的Python例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Event</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name</span>):<br>        self.name = name<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">EventDispatcher</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.listeners = &#123;&#125;<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_listener</span>(<span class="hljs-params">self, event_name, listener</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> event_name <span class="hljs-keyword">in</span> self.listeners:<br>            self.listeners[event_name] = []<br><br>        self.listeners[event_name].append(listener)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove_listener</span>(<span class="hljs-params">self, event_name, listener</span>):<br>        <span class="hljs-keyword">if</span> event_name <span class="hljs-keyword">in</span> self.listeners:<br>            listeners = self.listeners[event_name]<br>            <span class="hljs-keyword">if</span> listener <span class="hljs-keyword">in</span> listeners:<br>                listeners.remove(listener)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dispatch_event</span>(<span class="hljs-params">self, event</span>):<br>        event_name = event.name<br>        <span class="hljs-keyword">if</span> event_name <span class="hljs-keyword">in</span> self.listeners:<br>            listeners = self.listeners[event_name]<br>            <span class="hljs-keyword">for</span> listener <span class="hljs-keyword">in</span> listeners:<br>                listener(event)<br><br>dispatcher = EventDispatcher()<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">on_event</span>(<span class="hljs-params">event</span>):<br>    <span class="hljs-built_in">print</span>(event.name)<br><br>dispatcher.add_listener(<span class="hljs-string">&#x27;my event&#x27;</span>, on_event)<br><br>event = Event(<span class="hljs-string">&#x27;my event&#x27;</span>)<br>dispatcher.dispatch_event(event)<br><br>dispatcher.remove_listener(<span class="hljs-string">&#x27;my event&#x27;</span>, on_event)<br></code></pre></td></tr></table></figure>
+
+<p>这个例子中，我们定义了一个Event类，代表事件。然后定义了一个EventDispatcher类，用于分发事件和管理事件监听器。最后我们定义了一个on_event函数，用于处理事件。</p>
+<p>在主程序中，我们首先创建了一个EventDispatcher对象，并添加了一个事件监听器，当事件发生时，就会调用on_event函数来处理。然后我们创建了一个事件对象，并分发给EventDispatcher，从而触发了事件处理。最后，我们移除了事件监听器。</p>
+<h3><span id="三-message-bus-pattern消息总线模式">三、Message Bus Pattern消息总线模式</span></h3><p>Message Bus Pattern是一种用于应用程序中不同组件通信的设计模式。它提供了一种中心化的消息传递机制，让不同组件能够以松散耦合的方式进行通信。</p>
+<p>在Message Bus Pattern中，消息总线由一个中心化的消息队列组成，各个组件可以将消息发送到消息队列中，并可以从中获取其他组件发送的消息。消息总线还可以提供一些额外的功能，如消息广播、消息过滤、消息路由等。</p>
+<p>使用Message Bus Pattern可以有效地解耦应用程序中不同组件之间的关系，降低组件之间的依赖性，提高应用程序的灵活性和可扩展性。</p>
+<p>在Python中可以使用第三方库如PyPubSub来实现Message Bus Pattern。下面是一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pubsub <span class="hljs-keyword">import</span> pub<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyComponent</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.value = <span class="hljs-string">&quot;&quot;</span><br>        pub.subscribe(self.on_message, <span class="hljs-string">&quot;test&quot;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">on_message</span>(<span class="hljs-params">self, msg</span>):<br>        self.value = msg<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_value</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.value<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyApp</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.component = MyComponent()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        pub.sendMessage(<span class="hljs-string">&quot;test&quot;</span>, msg=<span class="hljs-string">&quot;Hello World!&quot;</span>)<br>        <span class="hljs-built_in">print</span>(self.component.get_value())<br><br>app = MyApp()<br>app.run()<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，MyComponent是一个组件，它订阅了名为”test”的消息。当有消息发送到”test”的时候，MyComponent会调用on_message方法更新自己的状态。MyApp是一个应用程序，它将一个消息发送到”test”，并输出MyComponent的值。这样，在MyApp和MyComponent之间就实现了一种简单的消息传递方式，它们之间并没有直接的依赖关系。</p>
+<h3><span id="四-onion-architecture洋葱模式">四、Onion Architecture洋葱模式</span></h3><p>Onion Architecture是一种软件设计模式，它的主要思想是将应用程序按照不同的层次进行分离，以便更好地维护和测试整个应用程序。这种架构的核心思想是将应用程序分为三个主要的层次：表示层、应用层和领域层。各个层次之间相互隔离，从而形成一个可扩展、可维护且高度可测试的应用程序。</p>
+<ul>
+<li>领域层：该层包含应用程序的核心业务逻辑，它也是整个应用程序的基础。领域层的目的是将业务逻辑和数据从其它部分隔离开来，从而使得业务逻辑更加清晰、易于理解和维护。</li>
+<li>应用层：该层是领域层和表示层之间的桥梁。它包含与用户交互的逻辑，并将用户的请求传递给领域层进行处理。应用层还负责处理事务和安全性等方面的关注点。</li>
+<li>表示层：该层包含用户界面和所有与用户交互的逻辑。表示层接受用户输入，并将其传递给应用层进行处理。表示层还负责将处理结果呈现给用户。</li>
+</ul>
+<p>使用Onion Architecture设计一个程序，可以带来以下好处：</p>
+<ul>
+<li>更好的可测试性：不同的层次之间相互隔离，从而可以更容易地编写单元测试和集成测试。</li>
+<li>更好的可维护性：不同的层次之间相互隔离，从而可以更容易地进行代码维护和修改。</li>
+<li>更好的可扩展性：由于不同的层次之间相互隔离，因此可以更容易地添加新功能。</li>
+</ul>
+<p>下面是一个简单的Python代码示例，该示例使用Onion Architecture实现了一个名为“Hello World”的应用程序：</p>
+<p>领域层：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class Greeter:<br>    def greet(self, name: str) -&gt; str:<br>        return f&quot;Hello, &#123;name&#125;!&quot;<br></code></pre></td></tr></table></figure>
+
+<p>应用层：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class GreetingService:<br>    def __init__(self, greeter: Greeter):<br>        self.greeter = greeter<br><br>    def greet(self, name: str) -&gt; str:<br>        return self.greeter.greet(name)<br></code></pre></td></tr></table></figure>
+
+<p>表示层：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class Console:<br>    def __init__(self, greeting_service: GreetingService):<br>        self.greeting_service = greeting_service<br>        <br>    def run(self):<br>        name = input(&quot;What is your name? &quot;)<br>        greeting = self.greeting_service.greet(name)<br>        print(greeting)<br></code></pre></td></tr></table></figure>
+
+<p>在这个代码示例中，Greeter类表示领域层，GreetingService类表示应用层，Console类表示表示层。整个应用程序的控制流程由Console类来控制，在用户输入名字之后，会调用GreetingService类中的greet方法，进而调用Greeter类中的greet方法，最终返回一个问候语到控制台中。整个应用程序的结构清晰、易于理解，并且不同的层次之间相互隔离。</p>
+<h3><span id="五-layered-architecture分层架构">五、Layered Architecture分层架构</span></h3><p>Layered Architecture（分层架构）是一种软件设计模式，将软件系统的不同部分分为多个层次，每个层次专门负责一种或多种功能。每个层次之间都有严格的接口规范，可以使系统更加模块化和可维护。</p>
+<p>Layered Architecture的主要作用是提高软件系统的灵活性和可扩展性。由于不同层次之间都有清晰的界限和规范，可以降低模块之间的耦合度，使得各个模块之间更加独立。此外，由于每个层次都有自己的功能，可以使得系统的功能更加清晰，易于理解和维护。</p>
+<p>下面是一个简单的Python代码示例，展示了一个基于Layered Architecture的计算器程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class View:<br>    def get_user_input(self):<br>        pass<br><br>    def show_result(self, result):<br>        pass<br><br>class Controller:<br>    def __init__(self, view, model):<br>        self.view = view<br>        self.model = model<br><br>    def run(self):<br>        user_input = self.view.get_user_input()<br>        result = self.model.calculate(user_input)<br>        self.view.show_result(result)<br><br>class Model:<br>    def calculate(self, user_input):<br>        pass<br><br>view = View()<br>model = Model()<br>controller = Controller(view, model)<br>controller.run()<br></code></pre></td></tr></table></figure>
+
+<p>在上面的示例中，View层负责显示用户界面和获取用户的输入，Model层负责计算逻辑，Controller层将View和Model连接起来，实现用户输入与计算逻辑之间的交互。这三个层次之间都有严格的接口规范，实现了各自的功能，并且可以轻松地扩展或修改某个层次的功能而不影响其他层次的正常运行。</p>
+<p>总之，分层架构是一种非常常见的软件设计模式，可以使软件系统更加灵活，易于维护和扩展。在实际开发中，需要根据具体情况确定各个层次的功能和接口规范，并严格遵守规范，以达到更好的效果。</p>
+
+	</article>
+
+	 
+    <div class="kira-post-copyright">
+        <strong>本文作者：</strong>Cmos<br>
+        <strong>本文链接：</strong><a href="https://www.cmosite.cn/%E8%BD%AF%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/" title="https:&#x2F;&#x2F;www.cmosite.cn&#x2F;软件体系结构复习（二）&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;www.cmosite.cn&#x2F;软件体系结构复习（二）&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+  
+	<div class="kira-post-nav">
+		<nav class="post-nav">
+			
+		</nav>
+	</div>
+	
+	<div class="kira-post-meta kira-rainbow">
+		
+		
+			<a class="kirafont icon-tag-fill -none-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a>
+		
+	</div>
+	
+		<script src="/js/kira-code-copy.js"></script>
+	
+	
+	<div class="kira-post-footer">
+</div>
+	
+</div>
+
+				</div>
+			</div>
+			<div class="kira-right-column">
+	<a onclick="document.querySelector('#kira-top-header').scrollIntoView({behavior: 'smooth'});" class="kira-backtotop" aria-label="回到顶部" title="回到顶部">
+		<button class="mdui-fab mdui-ripple">
+			<i class="kirafont icon-caret-up"></i>
+		</button>
+	</a>
+</div>
+
+		</div>
+	</body>
+</html>
