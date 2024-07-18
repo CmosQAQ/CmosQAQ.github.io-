@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html 
+	lang="zh_CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+<link rel="stylesheet" href="/css/layout.css">
+
+		
+		<title> xv6学习，Lab2-Xv6 and Unix utilities -  Cmosite</title>
+		<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+		<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+		<!-- lazyload -->
+		<script src="https://unpkg.com/lazysizes@5.1.0/lazysizes.min.js"></script>
+		<!-- smooth-scrolling -->
+		<script src="https://unpkg.com/smooth-scrolling.js@1.0.0"></script>
+		<!-- highlight -->
+		<link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/atom-one-dark.min.css" />
+		<script src="//unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+		<!-- 预置 kiraicon -->
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		
+			<link rel="stylesheet" href="//at.alicdn.com/t/font_3299330_el19bsi97h8.css" crossorigin />
+		
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		<link
+			rel="shortcut icon"
+			href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			type="image/png"
+		/>
+		<link rel="stylesheet" href="/deps/css/APlayer.min.css">
+		
+		<script src="/deps/js/APlayer.min.js"></script>
+		<script src="/deps/js/Meting.min.js"></script>
+	<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<div
+			class="kira-background"
+			style="background-image: url('https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/bk2.jpg')"
+		></div>
+		<div class="kira-header">
+    <a
+        class="kira-drawer-button mdui-ripple"
+        title="导航栏"
+        onclick="document.querySelector('.kira-sidebar-modal').classList.add('show');document.querySelector('.kira-sidebar#sidebar').classList.add('show');"
+    >
+        <i class="kirafont icon-menu"></i>
+    </a>
+    <a href="/" title="Cmosite">
+        <img
+			src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			alt="YangYuchen"
+		/>
+    </a>
+</div>
+		<div class="kira-body">
+			<div class="kira-sidebar" id="sidebar">
+	<div class="kira-avatar mdui-ripple">
+		<a target="_blank" rel="noopener" href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png" title="YangYuchen">
+			<img
+				src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+				alt="YangYuchen"
+			/>
+		</a>
+	</div>
+	<div class="kira-count">
+		<div><span>文章</span>13</div>
+		<div><span>标签</span>4</div>
+		<div><span>分类</span>0</div>
+	</div>
+	<div class="kira-list">
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/"
+			title="回到首页"
+		>
+			<i
+				class="kirafont icon-home"
+			></i>
+			<div class="kira-list-item-content">回到首页</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/archive.html"
+			title="文章归档"
+		>
+			<i
+				class="kirafont icon-container"
+			></i>
+			<div class="kira-list-item-content">文章归档</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/about.html"
+			title="关于本人"
+		>
+			<i
+				class="kirafont icon-user"
+			></i>
+			<div class="kira-list-item-content">关于本人</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/friends.html"
+			title="我的朋友"
+		>
+			<i
+				class="kirafont icon-team"
+			></i>
+			<div class="kira-list-item-content">我的朋友</div>
+		</a>
+		
+	</div>
+	<aside id="kira-sidebar">
+		 <div class="kira-widget-wrap">
+	<div class="kira-widget kira-social">
+		<a
+			class="mdui-ripple"
+			href="/qqinfo.html"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ'}"
+			style="
+				color: rgb(49, 174, 255);
+				background-color: rgba(49, 174, 255, .1);
+			"
+		>
+			<i
+				class="kirafont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .15);
+			"
+		>
+			<i
+				class="kirafont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'Gitee'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-gitee"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'Bili'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-bilibili"
+			></i> </a
+		>
+	</div>
+</div>
+    
+<div class="kira-widget-wrap">
+	<div id="randomtagcloud" class="kira-widget tagcloud kira-rainbow"><a href="/tags/%E6%97%A0%E7%94%A8/" style="font-size: 15px;">无用</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 20px;">编程</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 15px;">英语</a></div>
+	
+</div>
+
+  
+<div class="kira-widget-wrap">
+	<h3 class="kira-widget-title">文章归档</h3>
+	<div class="kira-widget">
+		<ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">9</span></li></ul>
+	</div>
+</div>
+
+ 
+	</aside>
+	<div class="kira-copyright">
+		&copy; 2024
+		<a href="/">YangYuchen</a
+		>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> &
+		<!-- TODO: github 链接 -->
+		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
+		<br />
+		
+		
+	</div>
+</div>
+<div class="kira-sidebar-modal" id="sidebar-modal" onclick="(function(self) {
+	self.classList.remove('show');
+	document.querySelector('.kira-sidebar.show#sidebar').classList.remove('show');
+})(this)"></div>
+			<div class="kira-content">
+				<div id="kira-top-header"></div>
+				<div class="kira-main-content">
+					
+<link rel="stylesheet" href="/css/kira-image.css">
+
+<script src="/js/kira-image.js"></script>
+<div class="kira-image">
+    <div class="kira-image-modal">
+        <div class="kira-image-header">
+            <div class="kira-image-counter"></div>
+            <div class="kira-image-title"></div>
+            <div class="kira-image-operation">
+                <div class="kira-image-operation-button" id="kira-image-operation-button-zoom">
+                    <i class="kirafont icon-zoom-in"></i>
+                </div>
+                <div class="kira-image-operation-button" id="kira-image-operation-button-close">
+                    <i class="kirafont icon-close"></i>
+                </div>
+            </div>
+        </div>
+        <div class="kira-image-container">
+            <div class="kira-image-prev-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-left"></i>
+                </div>
+            </div>
+            <div class="kira-image-list">
+                <div class="kira-image-prev">
+                    <img />
+                </div>
+                <div class="kira-image-now">
+                    <img />
+                </div>
+                <div class="kira-image-next">
+                    <img />
+                </div>
+            </div>
+            <div class="kira-image-next-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kira-post">
+	<article>
+		
+		<div class="kira-post-cover">
+			<img
+				data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab1bg.png"
+				data-sizes="auto"
+				alt="xv6学习，Lab2-Xv6 and Unix utilities"
+				class="lazyload kira-post-cover-image disabled-kira-image"
+			/>
+			<h1>xv6学习，Lab2-Xv6 and Unix utilities</h1>
+		</div>
+		
+		<div class="kira-post-meta kira-rainbow" style="margin:10px 0!important;">
+			<a><i class="kirafont icon-calendar-fill"></i>2024年07月11日</a>
+			<a><i class="kirafont icon-areachart"></i>8.5k 字</a>
+			<a><i class="kirafont icon-time-circle-fill"></i>大概 39 分钟</a>
+		</div>
+		<h2><span id="二-lab2-system-calls">二、Lab2: system calls</span></h2><p>在完成实验前，先阅读Chapter 2，Sections 4.3 以及 4.4 of Chapter 4，这些章节主要说明操作系统的三个必备要求，即多路复用、隔离和交互(multiplexing, isolation, and interaction.)。下面对其中的一些重要内容进行总结：</p>
+<ol>
+<li><p>抽象计算机的硬件资源</p>
+<p>由于应用程序之间的彼此不信任，由应用程序直接调用计算机底层硬件不现实，所以需要通过借助操作系统来调用底层硬件。比如，Unix应用程序仅通过文件系统的打开、读、写和关闭系统调用与存储器进行交互，而不是直接读取和写磁盘。这为应用程序提供了路径名的便利性，并允许操作系统（作为接口的实现者）来管理磁盘。Unix进程使用<code>exec</code>来构建它们的内存映像，而不是直接与物理内存交互。</p>
+</li>
+<li><p>用户模式、监督模式和系统调用（User mode, supervisor mode, and system calls）</p>
+<p>因为应用程序之间可能会相互影响，所以操作系统必须安排应用程序不能修改（甚至读取）操作系统的数据结构和指令，并且应用程序不能访问其他进程的内存，来使应用程序之间相互隔离。cpu为强隔离提供了硬件支持。例如，RISC-V有三种模式可以执行指令：机器模式、监督模式和用户模式。在机器模式下执行的指令具有完全的权限；在监督模式下，CPU被允许执行特权指令：例如，启用和禁用中断，读取和写保存页表地址的寄存器，等等。如果用户模式下的应用程序试图执行特权指令，那么CPU不会执行指令，而是切换到监督模式，以便监督模式代码可以终止应用程序。想要调用内核函数（例如，xv6中的system call）的应用程序必须转换到内核。CPU提供了一个特殊的指令，它将CPU从用户模式切换到监督模式，并在内核指定的入口点进入内核。</p>
+</li>
+<li><p>内核组织（ Kernel organization）</p>
+<ul>
+<li>宏内核（monolithic kernel）：整个操作系统都驻留在内核中，因此所有系统调用的实现都以监督模式运行。整个操作系统以完整的硬件特权运行。操作系统设计者不需要决定操作系统的哪一部分不需要完整的硬件特权。此外，操作系统的不同部分也更容易进行合作。例如，操作系统可能具有一个可以由文件系统和虚拟内存系统共享的缓冲区缓存。</li>
+<li>微内核（microkernel）：为了减少内核中出错的风险，操作系统设计人员可以最小化在监督模式下运行的操作系统代码的数量，并在用户模式下执行大部分操作系统，这就是微内核。在微内核中，内核接口由一些低级功能组成，可用于启动应用程序、发送消息、访问设备硬件等。</li>
+</ul>
+</li>
+<li><p>进程概述（ Process overview）</p>
+<ul>
+<li><p>xv6中的隔离单元是一个进程process，进程抽象（process abstraction）可以防止一个进程破坏或监视另一个进程的内存、CPU、文件描述符等。它还可以防止进程破坏内核本身，因此进程就不能破坏内核的隔离机制。进程为程序提供了专用内存系统或地址空间，其他进程无法读写。一个进程还为程序提供了它自己的CPU来执行程序的指令。Xv6使用页表（由硬件实现）给每个进程提供自己的地址空间。RISC-V页表将映射虚拟地址（RISC-V指令操作的地址）为物理地址（CPU芯片发送到主存储器的地址）。</p>
+</li>
+<li><p>官方文档用图片描述了进程的地址空间，一个地址空间从虚拟地址0开始，首先是用户的指令，全局变量首先是指令，然后是用户栈空间user stack，最后是一个“堆”区，<code>malloc</code>可以根据需要在这个堆区域中进行扩展。在地址空间的顶部，xv6预留了页面空间，将在第4章中解释。</p>
+</li>
+<li><p>xv6内核为每个进程维护许多状态片段，并将这些状态片段存在位于kernel&#x2F;proc.h：86的结构体中，我在原有注释基础上查询资料做了补充，如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">procstate</span> &#123;</span> UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE &#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">spinlock</span> <span class="hljs-title">lock</span>;</span> <span class="hljs-comment">// 进程锁，用于保护进程的关键数据结构</span><br><br>  <span class="hljs-comment">// p-&gt;lock must be held when using these:</span><br>  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">procstate</span> <span class="hljs-title">state</span>;</span> <span class="hljs-comment">// 进程控制块的状态，枚举类在上面</span><br>  <span class="hljs-type">void</span> *chan; <span class="hljs-comment">// 如果不为空，表示进程正在等待的通道</span><br>  <span class="hljs-type">int</span> killed; <span class="hljs-comment">// 如果为非零，表示进程已被杀死</span><br>  <span class="hljs-type">int</span> xstate; <span class="hljs-comment">// 退出状态，将返回给父进程的wait</span><br>  <span class="hljs-type">int</span> pid; <span class="hljs-comment">// 进程 ID</span><br><br>  <span class="hljs-comment">//  wait_lock must be held when using this:</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">parent</span>;</span> <span class="hljs-comment">// 父进程指针，用于表示进程的父进程</span><br><br>  <span class="hljs-comment">// these are private to the process, so p-&gt;lock need not be held.</span><br>  uint64 kstack; <span class="hljs-comment">// 内核堆栈，进程从用户态进入内核态后使用，存储用户态的断点</span><br>  uint64 sz; <span class="hljs-comment">// 进程内存大小（以字节为单位），从0开始</span><br>  <span class="hljs-type">pagetable_t</span> pagetable; <span class="hljs-comment">// 用户页表，用于管理进程的内存映射，进程和进程用户空间完全独立，用不同的页表映射到不同的物理内存上去，进程切换时页表也要切换</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">trapframe</span> *<span class="hljs-title">trapframe</span>;</span> <span class="hljs-comment">// 陷阱帧，用于处理异常和中断，记录进程从用户态进入时的陷阱帧</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">context</span> <span class="hljs-title">context</span>;</span> <span class="hljs-comment">// 进程上下文，在内核态下，用于切换进程时保存和恢复进程的状态，及存储原先进程的相关信息</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file</span> *<span class="hljs-title">ofile</span>[<span class="hljs-title">NOFILE</span>];</span> <span class="hljs-comment">// 进程打开的资源</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode</span> *<span class="hljs-title">cwd</span>;</span> <span class="hljs-comment">// 当前进程的工作目录</span><br>  <span class="hljs-type">char</span> name[<span class="hljs-number">16</span>]; <span class="hljs-comment">// 进程名称，用于调试和识别进程</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>简而言之，每个进程都有一个执行线程（简称线程），用来执行进程的指令。一个线程可以被挂起，然后再恢复。线程的大部分状态（局部变量、函数调用返回地址）都存储在线程的栈中。每个进程都有两个栈：一个用户栈和一个内核栈（<code>p-&gt;kstack</code>）。进程的线程将根据不同的指令和功能在用户堆栈和内核堆栈之间进行切换。</p>
+</li>
+</ul>
+</li>
+<li><p>如何启动xv6的第一个进程？</p>
+<ul>
+<li><p>当RISC-V计算机开机时，它会初始化自己并运行一个存储在只读存储器中的引导加载器。引导加载程序将xv6内核加载到内存中。然后，在机器模式下，CPU从(kernel&#x2F;entry.S:6)开始执行xv6。开始时禁用了分页硬件：虚拟地址直接映射到物理地址。</p>
+</li>
+<li><p>xv6系统是如何编译的？首先，Makefile会读取系统的每一个c语言文件，通过gcc编译器生成拓展名为s的riscv汇编语言文件，之后使用汇编语言编译器，生成拓展名为o的汇编语言二进制格式。最后，系统加载器loader会收集所有拓展名为o的汇编文件并将它们链接在一起。kernel文件夹下的文件就对应内核模式，user文件夹下的就对应用户模式。Makrfile还会创建kernel.asm,它将包含内核完整的汇编语言。</p>
+</li>
+<li><p>xv6在entry.S中的代码设置了栈 （这部分内容为汇编语言）这样就可以运行C代码 。文件start.c(kernel&#x2F;start.c:11)中声明了初始栈的空间，即下方的代码块。在_entry处的代码加载栈指针寄存器 sp，地址为 stack0+4096，也就是栈的顶部，因为 RISC-V 的栈是向下扩张的。现在内核就拥有了栈，<code>entry</code> 调用<code>start</code>(kernel&#x2F;start.c:21)并执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs asm"># entry.S needs one stack per CPU.<br>__attribute__ ((aligned (16))) char stack0[4096 * NCPU];<br><br># kernel/entry.S<br># 这部分为汇编语言，自带的注释说明了功能<br>        # qemu -kernel loads the kernel at 0x80000000<br>        # and causes each hart (i.e. CPU) to jump there.<br>        # kernel.ld causes the following code to<br>        # be placed at 0x80000000.<br>.section .text<br>.global _entry<br>_entry:<br>        # set up a stack for C.<br>        # stack0 is declared in start.c,<br>        # with a 4096-byte stack per CPU.<br>        # sp = stack0 + (hartid * 4096)<br>        la sp, stack0<br>        li a0, 1024*4<br>        csrr a1, mhartid<br>        addi a1, a1, 1<br>        mul a0, a0, a1<br>        add sp, sp, a0<br>        # jump to start() in start.c<br>        call start<br>spin:<br>        j spin<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>函数 start 执行一些只有在机器模式下才允许的配置，然后切换到监督者模式。为进入监督者模式，RISC-V 提供了指令 <code>mret</code>。</p>
+<blockquote>
+<p>This instruction is most often used to return from a previous call from supervisor mode to machine mode. start isn’t returning from such a call, and instead sets things up as if there had been one: it sets the previous privilege mode to supervisor in the register mstatus, it sets the return address to main by writing main’s address into the register mepc, disables virtual address translation in supervisor mode by writing 0 into the page-table register satp, and delegates all interrupts and exceptions to supervisor mode.</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/start.c中的start函数</span><br><span class="hljs-comment">// entry.S在stack0上以机器模式跳转到此处</span><br><span class="hljs-comment">// 这部分代码的注释不全面也并不准确</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">start</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-comment">// 这段代码读取当前机器状态寄存器 mstatus 的值，并将其与MSTATUS_MPP_MASK取反后进行与操作，得到新的 mstatus 值。   // 将新的 mstatus 值写入机器状态寄存器，将处理器模式设置为 Supervisor 模式</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> x = r_mstatus();<br>  x &amp;= ~MSTATUS_MPP_MASK;<br>  x |= MSTATUS_MPP_S;<br>  w_mstatus(x);<br>  w_mepc((uint64)main);<br>  w_satp(<span class="hljs-number">0</span>);<br>  w_medeleg(<span class="hljs-number">0xffff</span>);<br>  w_mideleg(<span class="hljs-number">0xffff</span>);<br>  w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);<br>  w_pmpaddr0(<span class="hljs-number">0x3fffffffffffff</span>ull);<br>  w_pmpcfg0(<span class="hljs-number">0xf</span>);<br>  timerinit();<br>  <span class="hljs-type">int</span> id = r_mhartid();<br>  w_tp(id);<br>  <span class="hljs-comment">// 切换到supervisor模式并跳转到main函数</span><br>  <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span><span class="hljs-params">(<span class="hljs-string">&quot;mret&quot;</span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>从start.c跳转至main.c，在main函数中，xv6对内存模块，进程模块以及文件系统等进行了初始化，之后进入<code>scheduler</code>函数，调度用户进程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/main.c中的main函数</span><br><span class="hljs-comment">// start() jumps here in supervisor mode on all CPUs.</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">main</span><span class="hljs-params">()</span><br> &#123;<br>  <span class="hljs-comment">// 通过cpuid函数获取当前CPU核的ID，如果当前CPU核ID为0（主CPU核），则执行以下初始化操作</span><br> <span class="hljs-keyword">if</span>(cpuid() == <span class="hljs-number">0</span>)&#123;<br>    consoleinit(); <span class="hljs-comment">// 初始化控制台</span><br>    printfinit();  <span class="hljs-comment">// 初始化print语句</span><br>    <span class="hljs-comment">// 这是在shell中看到的打印的语句</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;xv6 kernel is booting\n&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    kinit();         <span class="hljs-comment">// physical page allocator</span><br>    kvminit();       <span class="hljs-comment">// create kernel page table</span><br>    kvminithart();   <span class="hljs-comment">// turn on paging</span><br>    procinit();      <span class="hljs-comment">// process table</span><br>    trapinit();      <span class="hljs-comment">// trap vectors</span><br>    trapinithart();  <span class="hljs-comment">// install kernel trap vector</span><br>    plicinit();      <span class="hljs-comment">// set up interrupt controller</span><br>    plicinithart();  <span class="hljs-comment">// ask PLIC for device interrupts</span><br>    binit();         <span class="hljs-comment">// buffer cache</span><br>    iinit();         <span class="hljs-comment">// inode table</span><br>    fileinit();      <span class="hljs-comment">// file table</span><br>    virtio_disk_init(); <span class="hljs-comment">// emulated hard disk</span><br>    userinit();      <span class="hljs-comment">// first user process</span><br>    __sync_synchronize();<br>    started = <span class="hljs-number">1</span>;<br>  &#125; <br>    <span class="hljs-comment">// 当前CPU核的ID不为0的情况</span><br>    <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">while</span>(started == <span class="hljs-number">0</span>) <span class="hljs-comment">// 如果started还是0，就一直循环，直到被主核设置为1</span><br>      ;<br>    __sync_synchronize();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hart %d starting\n&quot;</span>, cpuid());<br>    kvminithart();    <span class="hljs-comment">// turn on paging</span><br>    trapinithart();   <span class="hljs-comment">// install kernel trap vector</span><br>    plicinithart();   <span class="hljs-comment">// ask PLIC for device interrupts</span><br>  &#125;<br>  <span class="hljs-comment">//调用 scheduler 函数来启动进程调度。</span><br>  scheduler();        <br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>main还调用了用户内部化程序（kernel&#x2F;proc.c：233）来创建第一个进程，具体代码如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/proc.c：233</span><br><span class="hljs-comment">// 设置第一个用户进程</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">userinit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br> &#123;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span>;</span> <span class="hljs-comment">// 定义一个进程结构体指针p并分配</span><br> p = allocproc();<br>  initproc = p; <span class="hljs-comment">// 将分配的进程结构体指针赋值给initproc</span><br>  <span class="hljs-comment">// 分配一个用户页面，并将 initcode 的指令和数据复制到其中</span><br>  uvmfirst(p-&gt;pagetable, initcode, <span class="hljs-keyword">sizeof</span>(initcode)); <br>  p-&gt;sz = PGSIZE; <span class="hljs-comment">// 设置进程的大小为 PGSIZE（页面大小）</span><br>  <span class="hljs-comment">// 为从内核返回用户的第一次“返回”做准备</span><br>  p-&gt;trapframe-&gt;epc = <span class="hljs-number">0</span>; <span class="hljs-comment">//设置进程的trapframe中的epc（程序计数器）为 0</span><br>  p-&gt;trapframe-&gt;sp = PGSIZE; <span class="hljs-comment">// 设置进程的trapframe中的sp（栈指针）为 PGSIZE</span><br>  safestrcpy(p-&gt;name, <span class="hljs-string">&quot;initcode&quot;</span>, <span class="hljs-keyword">sizeof</span>(p-&gt;name)); <span class="hljs-comment">// 安全地复制字符串initcode到进程的name字段</span><br>  p-&gt;cwd = namei(<span class="hljs-string">&quot;/&quot;</span>); <span class="hljs-comment">// 设置进程的工作目录为根目录</span><br>  p-&gt;state = RUNNABLE; <span class="hljs-comment">// 设置进程的状态为 RUNNABLE（可运行）</span><br>  release(&amp;p-&gt;lock); <span class="hljs-comment">// 释放进程的锁</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>第一个进程执行一个用 RISC-V 汇编编写的程序initcode.S（user&#x2F;initcode.S:1），它通过调用 <code>exec</code> 系统调用重新进入内核。正如我们在第一章中所看到的，<code>exec</code> 用一个新的程序（本例中是&#x2F;init）替换当前进程的内存和寄存器。一旦内核完成 <code>exec</code>，它就会在<code>/init</code> 进程中返回到用户空间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs asm"># user/initcode.S，主要实现了用户空间的初始进程/init的执行。它设置了程序的名称和参数，执行exec系统调用，将控制权传递给内核来启动新程序<br>#include &quot;syscall.h&quot;<br><br> exec(init, argv)<br> .globl start<br>start:<br>     la a0, init<br>        la a1, argv<br>        li a7, SYS_exec<br>        ecall<br># 将/init的地址加载到 a0 寄存器<br># 将argv的地址加载到 a1 寄存器<br># 将系统调用号SYS_exec加载到 a7 寄存器<br># 执行系统调用<br><br># for(;;) exit();<br>exit:<br>        li a7, SYS_exit<br>        ecall<br>        jal exit<br><br># 将系统调用号 SYS_exit 加载到 a7 寄存器<br># 执行系统调用<br># 跳转到 exit 标签继续执行<br><br># char init[] = &quot;/init\0&quot;;<br>init:<br> .string &quot;/init\0&quot;<br># 定义字符数组 init<br><br># char *argv[] = &#123; init, 0 &#125;;<br>.p2align 2<br>argv:<br> .long init<br> .long 0<br># 定义字符指针数组 argv，包含 init 和 0<br># 将 init 的地址加载到第一个 long 型元素<br># 将 0 加载到第二个 long 型元素，作为结束标志<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>最后，<code>init</code> (user&#x2F;init.c:15)在需要时会创建一个新的控制台设备文件，然后以文件描述符 0、1 和 2 的形式打开它。然后它在控制台上启动一个 shell。这样系统就启动了，在控制台中看到了熟悉的<code>init: starting sh</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// user/init.c:15</span><br><span class="hljs-type">char</span> *argv[] = &#123; <span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-number">0</span> &#125;;  <span class="hljs-comment">//存储启动 shell 程序的命令行参数</span><br><br><span class="hljs-type">int</span><br> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br> <span class="hljs-type">int</span> pid, wpid;<br>  <span class="hljs-comment">// 打开控制台设备文件</span><br>  <span class="hljs-keyword">if</span>(open(<span class="hljs-string">&quot;console&quot;</span>, O_RDWR) &lt; <span class="hljs-number">0</span>)&#123;<br>    mknod(<span class="hljs-string">&quot;console&quot;</span>, CONSOLE, <span class="hljs-number">0</span>);<br>    open(<span class="hljs-string">&quot;console&quot;</span>, O_RDWR);<br>  &#125;<br>  dup(<span class="hljs-number">0</span>);  <span class="hljs-comment">// stdout</span><br>  dup(<span class="hljs-number">0</span>);  <span class="hljs-comment">// stderr</span><br>  <span class="hljs-keyword">for</span>(;;)&#123;  <span class="hljs-comment">// 循环执行，不断创建新的进程来执行 shell 程序</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: starting sh\n&quot;</span>);<br>    pid = fork();<br>    <span class="hljs-keyword">if</span>(pid &lt; <span class="hljs-number">0</span>)&#123;<br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: fork failed\n&quot;</span>);<br>      <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(pid == <span class="hljs-number">0</span>)&#123;<br>      exec(<span class="hljs-string">&quot;sh&quot;</span>, argv);<br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: exec sh failed\n&quot;</span>);<br>      <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>    <span class="hljs-keyword">for</span>(;;)&#123;<br>      <span class="hljs-comment">// this call to wait() returns if the shell exits,</span><br>      <span class="hljs-comment">// or if a parentless process exits.</span><br>      wpid = wait((<span class="hljs-type">int</span> *) <span class="hljs-number">0</span>);<br>      <span class="hljs-keyword">if</span>(wpid == pid)&#123;<br>        <span class="hljs-comment">// the shell exited; restart it.</span><br>        <span class="hljs-keyword">break</span>;<br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(wpid &lt; <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: wait returned an error\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// it was a parentless process; do nothing.</span><br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>一个进程可以通过执行RISC-V ecall指令来进行系统调用。此指令提高了硬件特权级别，并将程序计数器更改为一个由内核定义的入口点。入口点上的代码切换到一个内核堆栈，并执行实现系统调用的内核指令。当系统调用完成时，内核切换回用户堆栈，并通过调用sret指令返回到用户空间，这降低了硬件特权级别，并在系统调用指令之后立即恢复执行用户指令。进程的线程可以在内核中“阻塞”以等待I&#x2F;O，并在I&#x2F;O完成后恢复到它停止的位置。p-&gt;state 指示进程是否已分配、准备运行、运行、等待I&#x2F;O或退出。p-&gt;pagetable 保存为RISC-V硬件期望的格式。总的来说，通过分配地址空间让进程有了自己的“内存”，通过线程让进程有了自己的“CPU”，以实现隔离。</p>
+</li>
+</ul>
+</li>
+<li><p>安全模型（Security Model）</p>
+<p>操作系统必须假定进程的用户级代码将尽力破坏内核或其他进程，试图做出一些超出其权限的操作。内核的目标是限制每个用户进程，以便它所能做的就是读&#x2F;写&#x2F;执行它自己的用户内存，使用32个通用的RISC-V寄存器，并以系统调用所允许的方式影响内核和其他进程。内核必须阻止任何其他操作，这通常是内核设计中的一个绝对要求。我们希望内核代码是没有漏洞的，当然也不包含任何恶意的内容。当然实际中无法达到这样的理想情况，通常不可能编写无漏洞的代码或设计无漏洞的硬件。因此，值得在内核中设计保护措施，以尽可能防止存在bug。</p>
+</li>
+<li><p>实际情况（Real world）</p>
+<p>大多数操作系统都采用了进程的概念，而且大多数进程都看起来与xv6中的相似。然而，现代操作系统支持一个进程中的多个线程，以允许单个进程利用多个cpu。在一个进程中支持多个线程涉及到xv6没有的大量机制，包括潜在的接口更改（例如，Linux的克隆，fork的变体），以控制进程线程共享的哪些方面。</p>
+</li>
+<li><p>系统调用（4.3 Code: Calling system calls）</p>
+<p>exec调用如何实现？</p>
+<p>在riscv版本的xv6操作系统中，如果一个应用程序需要调用内核模式中的操作，需要使用ecall+系统调用号。内核模式的这一部分内容位于syscall.c中，它从a0中读取到系统调用号，并根据不同的系统调用号执行不同的操作。这样就实现了用户模式和内核模式的强隔离。</p>
+<p>initcode.S将exec的参数放在寄存器a0和a1中，并将系统调用号放在a7中。系统调用号与syscall数组中的条目匹配（一个函数指针表，位于kernel&#x2F;syscall.c：107）。ecall 指令进入内核，执行uservec、usertrap，然后执行syscall。</p>
+<p>syscall（kernel&#x2F;syscall.c：132）从陷阱帧 (trapframe)中保存的a7中检索系统调用编号(system call number)，并保存它的index到syscalls中。</p>
+<p>当sys_exec返回时，syscall记录其返回值到p-&gt;trapframe-&gt;a0中。这会导致原始的用户空间执行调用（exec）返回该值，因为 C 语言中 RISC-V 的调用规范将返回值放在 a0 中，也就是在栈上传递返回值。如果系统调用的编号无效，系统调用会打印一个错误并返回−1。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/syscall.h中部分代码</span><br><span class="hljs-comment">// System call numbers</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_fork    1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_exit    2</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_wait    3</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_pipe    4</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_read    5</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_kill    6</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_exec    7</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_fstat   8</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/syscall.c</span><br><span class="hljs-comment">// 从当前进程的地址处获取一个uint64类型的数据</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">fetchaddr</span><span class="hljs-params">(uint64 addr, uint64 *ip)</span><br>&#123;<br>    <span class="hljs-comment">// 获取当前进程结构体指针</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>    <span class="hljs-comment">// 检查地址是否超出进程空间大小或溢出</span><br>    <span class="hljs-keyword">if</span> (addr &gt;= p-&gt;sz || addr + <span class="hljs-keyword">sizeof</span>(uint64) &gt; p-&gt;sz) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    <span class="hljs-comment">// 使用 copyin 函数将进程页表中的数据复制到指定地址</span><br>    <span class="hljs-keyword">if</span> (copyin(p-&gt;pagetable, (<span class="hljs-type">char</span> *)ip, addr, <span class="hljs-keyword">sizeof</span>(*ip))!= <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 从当前进程的地址处获取一个以空字符结尾的字符串</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">fetchstr</span><span class="hljs-params">(uint64 addr, <span class="hljs-type">char</span> *buf, <span class="hljs-type">int</span> max)</span><br>&#123;<br>    <span class="hljs-comment">// 获取当前进程结构体指针</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>    <span class="hljs-comment">// 使用 copyinstr 函数将进程页表中的字符串复制到指定缓冲区</span><br>    <span class="hljs-keyword">if</span> (copyinstr(p-&gt;pagetable, buf, addr, max) &lt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    <span class="hljs-comment">// 返回字符串的长度（不包括空字符）</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">strlen</span>(buf);<br>&#125;<br><br><span class="hljs-comment">// 获取系统调用的第n个参数</span><br><span class="hljs-type">static</span> uint64 <span class="hljs-title function_">argraw</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span><br>&#123;<br>    <span class="hljs-comment">// 获取当前进程结构体指针</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>    <span class="hljs-comment">// 通过 switch 语句根据参数索引获取trapframe中的相应参数值</span><br>    <span class="hljs-keyword">switch</span> (n) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> p-&gt;trapframe-&gt;a0;<br>        <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>            <span class="hljs-keyword">return</span> p-&gt;trapframe-&gt;a1;<br>        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>            <span class="hljs-keyword">return</span> p-&gt;trapframe-&gt;a2;<br>        <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<br>            <span class="hljs-keyword">return</span> p-&gt;trapframe-&gt;a3;<br>        <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:<br>            <span class="hljs-keyword">return</span> p-&gt;trapframe-&gt;a4;<br>        <span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:<br>            <span class="hljs-keyword">return</span> p-&gt;trapframe-&gt;a5;<br>        <span class="hljs-keyword">default</span>:<br>            <span class="hljs-comment">// 如果参数索引超出范围，则触发 panic</span><br>            panic(<span class="hljs-string">&quot;argraw&quot;</span>);<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>&#125;<br><span class="hljs-comment">// 将系统调用的第n个参数作为 32 位整数进行获取</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">argint</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> *ip)</span><br>&#123;<br>    <span class="hljs-comment">// 获取原始参数值并将其存储在指定的指针位置</span><br>    *ip = argraw(n);<br>&#125;<br><span class="hljs-comment">// 将系统调用的第n个参数作为指针进行获取</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">argaddr</span><span class="hljs-params">(<span class="hljs-type">int</span> n, uint64 *ip)</span><br>&#123;<br>    <span class="hljs-comment">// 获取原始参数值并将其存储在指定的指针位置</span><br>    *ip = argraw(n);<br>&#125;<br><br><span class="hljs-comment">// 将系统调用的第n个参数作为以空字符结尾的字符串进行获取</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">argstr</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">char</span> *buf, <span class="hljs-type">int</span> max)</span><br>&#123;<br>    uint64 addr;<br>    <span class="hljs-comment">// 获取原始参数值作为地址</span><br>    argaddr(n, &amp;addr);<br>    <span class="hljs-comment">// 使用获取的地址获取字符串</span><br>    <span class="hljs-keyword">return</span> fetchstr(addr, buf, max);<br>&#125;<br><br><span class="hljs-comment">// 用于处理系统调用的函数原型声明（部分）</span><br><span class="hljs-keyword">extern</span> uint64 <span class="hljs-title function_">sys_fork</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-keyword">extern</span> uint64 <span class="hljs-title function_">sys_exit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-keyword">extern</span> uint64 <span class="hljs-title function_">sys_wait</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-keyword">extern</span> uint64 <span class="hljs-title function_">sys_pipe</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-keyword">extern</span> uint64 <span class="hljs-title function_">sys_read</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><br><span class="hljs-comment">// 系统调用函数指针数组（部分）</span><br><span class="hljs-type">static</span> <span class="hljs-title function_">uint64</span> <span class="hljs-params">(*syscalls[])</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> = &#123;<br>[SYS_fork]    sys_fork,<br>[SYS_exit]    sys_exit,<br>[SYS_wait]    sys_wait,<br>[SYS_pipe]    sys_pipe,<br>[SYS_read]    sys_read,<br>&#125;;<br><br><span class="hljs-comment">// 系统调用入口函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">syscall</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-type">int</span> num;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>    <span class="hljs-comment">// 获取系统调用号</span><br>    num = p-&gt;trapframe-&gt;a7;<br>    <span class="hljs-comment">// 如果系统调用号有效，且对应函数存在，则执行相应函数</span><br>    <span class="hljs-keyword">if</span> (num &gt; <span class="hljs-number">0</span> &amp;&amp; num &lt; NELEM(syscalls) &amp;&amp; syscalls[num]) &#123;<br>        <span class="hljs-comment">// 使用系统调用号查找并执行对应的系统调用函数</span><br>        p-&gt;trapframe-&gt;a0 = syscalls[num]();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 打印错误信息，表示未知的系统调用号</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %s: unknown sys call %d\n&quot;</span>, <br>                p-&gt;pid, p-&gt;name, num);<br>        p-&gt;trapframe-&gt;a0 = <span class="hljs-number">-1</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>系统调用参数(Chapter4.4 Code: System call arguments)</p>
+<p>内核中的系统调用实现需要查找从用户空间传递的参数。用户代码执行系统调用包装函数，其参数是由 RISC-V调用约定放置在寄存器中的。内核代码将用户寄存器保存到当前进程的陷阱帧中。内核函数 argint、argaddr 和 argfd 从陷阱帧中检索第 n 个系统调用参数，并将其转换为整数、指针或文件描述符。它们都调用 argraw 来检索相应的已保存的用户寄存器（kernel&#x2F;syscall.c：34）。</p>
+<p>有些系统调用将指针作为参数传递进来，内核必须使用这些指针来读写用户内存。例如，<code>exec</code> 系统调用会给内核传递一个指针数组，该数组指向用户空间中的字符串参数。这些指针带来了两个问题，第一，用户程序可能是有缺陷的或恶意的，它可能会给内核传递一个无效的指针或试图诱使内核访问内核内存而不是用户内存的指针。第二，xv6 内核的页表映射与用户的页表映射不同，因此内核无法使用普通指令从用户提供的地址加载或存储数据。</p>
+<p>内核实现了一些函数，用于安全地在用户提供的地址之间传输数据。fetchstr 就是一个例子（见 kernel&#x2F;syscall.c：25）。像 exec 这样的文件系统调用会使用 fetchstr 从用户空间获取字符串文件名参数。fetchstr 会调用 copyinstr 来完成这项艰巨的任务。</p>
+<p><code>copyinstr</code>（位于 kernel&#x2F;vm.c 中的第 403 行）会从用户页表<code>pagetable</code>中虚拟地址<code>srcva</code>开始，最多将<code>max</code>字节的数据复制到<code>dst</code>。因为<code>pagetable</code>不是当前页表，所以<code>copyinstr</code>使用<code>walkaddr</code>（它会调用<code>walk</code>）在<code>pagetable</code>中查询<code>srcva</code>，从而得到物理地址<code>pa0</code>。内核会将每个物理内存地址映射到对应的内核虚拟地址，所以<code>copyinstr</code>可以直接将字符串字节从<code>pa0</code>复制到<code>dst</code>。<code>walkaddr</code>（位于 kernel&#x2F;vm.c 中的第 109 行）会检查用户提供的虚拟地址是否属于该进程的用户地址空间，这样程序就无法欺骗内核去读取其他内存了。类似的函数<code>copyout</code>则是将数据从内核复制到用户提供的地址。</p>
+</li>
+</ol>
+<h3><span id="1-using-gdb-easy">1. Using gdb ()</span></h3><ul>
+<li><p>安装依赖。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/csdndogo/article/details/130772956">【MIT6.S081 xv6实验】gdb环境搭建：ubuntu无法运行riscv64-linux-gnu-gdb_so81riscv64-unknown-gdngdb配置-CSDN博客</a>解决报错信息后仍然无法运行，根据官方文档提示，犯了如下错误：</p>
+<blockquote>
+<p>Running the wrong type of gdb. If you run just <code>gdb</code>, it will not be able to understand the machine code that your binary is in (your computer&#x2F;Athena is using x86 and the binary <code>kernel/kernel</code> is using RISCV). You need to run <code>riscv64-unknown-elf-gdb</code> or the alternative <code>gdb-multiarch</code>. If you are on Athena, run <code>riscv64-unknown-elf-gdb</code>.</p>
+</blockquote>
+</li>
+<li><p>直接安装riscv工具链，会遇到各种版本不兼容问题，最后按照<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_65337730/article/details/134233032?spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-4-134233032-blog-136373831.235%5Ev43%5Econtrol&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-4-134233032-blog-136373831.235%5Ev43%5Econtrol&utm_relevant_index=9">【OS-rcore-lab1】riscv64-unknown-elf-gdb: command not found-CSDN博客</a> 中的操作搭建了配置环境，在<a target="_blank" rel="noopener" href="https://github.com/riscv-collab/riscv-gnu-toolchain/releases%E4%B8%AD%E6%89%BE%E5%88%B0%E4%BA%86%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%B7%A5%E5%85%B7%E3%80%82%E6%AD%A4%E5%A4%96%E4%B9%9F%E5%AD%A6%E4%B9%A0%E4%BA%86%E5%9C%A8Linux%E4%B8%AD%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E3%80%82">https://github.com/riscv-collab/riscv-gnu-toolchain/releases中找到了正确的工具。此外也学习了在Linux中如何配置环境变量。</a></p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab2_1.png" alt="image.png" class="lazyload"></li>
+</ul>
+<h3><span id="2-system-call-tracing-moderate">2. System call tracing ()</span></h3><blockquote>
+<p>In this assignment you will add a system call tracing feature that may help you when debugging later labs. You’ll create a new <code>trace</code> system call that will control tracing. It should take one argument, an integer “mask”, whose bits specify which system calls to trace. For example, to trace the fork system call, a program calls <code>trace(1 &lt;&lt; SYS_fork)</code>, where <code>SYS_fork</code> is a syscall number from <code>kernel/syscall.h</code>. You have to modify the xv6 kernel to print out a line when each system call is about to return, if the system call’s number is set in the mask. The line should contain the process id, the name of the system call and the return value; you don’t need to print the system call arguments. The <code>trace</code> system call should enable tracing for the process that calls it and any children that it subsequently forks, but should not affect other processes.</p>
+</blockquote>
+<p>简而言之，就是完成一个系统调用<code>trace</code>来追踪系统调用，并打印需要追踪调用的信息（进程编号，名称及返回值）。它接收一个整数”mask”，代表了要追踪的系统调用。比如题目中样例给的<code>trace 32 grep hello README </code>，就是跟踪<code>grep hello README</code>执行时的<code>read</code>。以下为根据提示进行实验的详细步骤。</p>
+<ul>
+<li><p>Makefile中添加<code>$U/_trace</code></p>
+</li>
+<li><p>在 <code>user/user.h</code> 中为系统调用添加原型（prototype），在 <code>user/usys.pl</code> 中添加stub，在 <code>kernel/syscall.h</code> 中添加系统调用编号。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// user/user.h</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">trace</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span>;<br><br><span class="hljs-comment">// user/usys.pl</span><br>entry(<span class="hljs-string">&quot;trace&quot;</span>);<br><br><span class="hljs-comment">// kernel/syscall.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_trace  22</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>构建系统也会调用 <code>user/usys.pl</code> 这个 Perl 脚本，它会生成 <code>user/usys.S</code>，用于提供具体的系统调用存根实现，此实现会使用 RISC-V 架构的 <code>ecall</code> 指令来完成到内核的切换。在完成了这些编译问题的修正后，运行 <code>trace 32 grep hello README</code> 命令，这个命令将会运行失败，因为尚未在内核中实现这个系统调用。</p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab2_3.png" alt="image.png" class="lazyload">
+</li>
+<li><p>从用户空间检索系统调用参数的函数位于<code> kernel/syscall.c</code> 中， 以下为它们的使用示例。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/sysproc.c 中的部分代码示例，省略了头文件</span><br><span class="hljs-comment">// 这些系统调用在内核空间执行，执行完毕后再返回用户空间</span><br><br><span class="hljs-comment">// 退出进程的系统调用</span><br>uint64 <br><span class="hljs-title function_">sys_exit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> <br>&#123; <br>    <span class="hljs-type">int</span> n; <br>    <span class="hljs-comment">// 从p-&gt;trapframe-&gt;a0获取用户提供的要退出进程</span><br>    argint(<span class="hljs-number">0</span>, &amp;n); <br>    <span class="hljs-comment">// 调用 exit 函数结束指定进程</span><br>    <span class="hljs-built_in">exit</span>(n); <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 等待子进程结束的系统调用</span><br>uint64 <br><span class="hljs-title function_">sys_wait</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> <br>&#123; <br>    uint64 p; <br>    <span class="hljs-comment">// 从p-&gt;trapframe-&gt;a0获取用户空间保存的子进程的标识符</span><br>    argaddr(<span class="hljs-number">0</span>, &amp;p); <br>    <span class="hljs-keyword">return</span> wait(p); <br>&#125;<br><br><span class="hljs-comment">// 调整进程空间大小的系统调用</span><br>uint64<br><span class="hljs-title function_">sys_sbrk</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> n;<br>  <span class="hljs-comment">// 解析用户传入的参数</span><br>  argint(<span class="hljs-number">0</span>, &amp;n);<br>  <span class="hljs-comment">// 获取当前进程的空间地址</span><br>  uint64 addr = myproc()-&gt;sz;<br>  <span class="hljs-comment">// 尝试动态调整空间大小，如果调整失败则返回错误码</span><br>  <span class="hljs-keyword">if</span>(growproc(n) &lt; <span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>  <span class="hljs-keyword">return</span> addr;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 proc 结构（<code>kernel/proc.h</code>）中定义新变量中记住其参数来实现trace系统调用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/proc.h</span><br>uint mask;                   <span class="hljs-comment">// Trace mask</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>根据上文<code>kernel/sysproc.c</code> 中的代码示例，添加一个 <code>sys_trace()</code>函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/sysproc.c</span><br><br>uint<br><span class="hljs-title function_">sys_trace</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  <span class="hljs-type">int</span> tracemask;<br>  argint(<span class="hljs-number">0</span>, &amp;tracemask);<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span>* <span class="hljs-title">p</span> =</span> myproc();<br>  p-&gt;mask = tracemask;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code> fork()</code>函数（ <code>kernel/proc.c</code>），以将追踪掩码<code>mask</code>从父进程复制到子进程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/proc.C</span><br><br><span class="hljs-comment">// 在使用fork创建子进程后，子进程获取mask</span><br>np-&gt;mask = p-&gt;mask;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改kernel&#x2F;syscall.c 中的 syscall() 函数，以打印跟踪输出。除此之外还需要添加一个系统调用名称的数组来进行索引。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/syscall.c</span><br><span class="hljs-keyword">extern</span> uint64 <span class="hljs-title function_">sys_trace</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><br><span class="hljs-type">static</span> <span class="hljs-title function_">uint64</span> <span class="hljs-params">(*syscalls[])</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> = &#123;<br><span class="hljs-comment">// 省略</span><br>[SYS_close]   sys_close,<br>[SYS_trace]   sys_trace,<br>&#125;;<br><br><span class="hljs-comment">//  这只是一个系统调用名的数组，用于打印系统调用的名称 </span><br><span class="hljs-type">char</span> *syscallnames[<span class="hljs-number">23</span>] = &#123;<br><span class="hljs-comment">// 省略                             </span><br><span class="hljs-string">&quot;close&quot;</span>,<br><span class="hljs-string">&quot;trace&quot;</span><br>&#125;;<br><br><br><span class="hljs-type">void</span><br><span class="hljs-title function_">syscall</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> num;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br><br>  num = p-&gt;trapframe-&gt;a7;<br>  <span class="hljs-keyword">if</span>(num &gt; <span class="hljs-number">0</span> &amp;&amp; num &lt; NELEM(syscalls) &amp;&amp; syscalls[num]) &#123; <span class="hljs-comment">// 系统调用编号正确</span><br>    p-&gt;trapframe-&gt;a0 = syscalls[num](); <span class="hljs-comment">// 调用并将返回值存到用户进程的 a0 寄存器中</span><br>    <span class="hljs-comment">// 对该编号系统调用的进行trace</span><br>    <span class="hljs-keyword">if</span>((p-&gt;mask &gt;&gt; num) &amp; <span class="hljs-number">1</span>) &#123;<br>      <span class="hljs-comment">// 打印对应的pid、系统调用名称和返回值</span><br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d: syscall %s -&gt; %d\n&quot;</span>,p-&gt;pid, syscallnames[num], p-&gt;trapframe-&gt;a0); <br>    &#125;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %s: unknown sys call %d\n&quot;</span>,<br>            p-&gt;pid, p-&gt;name, num);<br>    p-&gt;trapframe-&gt;a0 = <span class="hljs-number">-1</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab2_4.png" alt="image.png" class="lazyload"></li>
+</ul>
+<h3><span id="3-sysinfo-moderate">3. Sysinfo ()</span></h3><blockquote>
+<p>In this assignment you will add a system call, <code>sysinfo</code>, that collects information about the running system. The system call takes one argument: a pointer to a <code>struct sysinfo</code> (see <code>kernel/sysinfo.h</code>). The kernel should fill out the fields of this struct: the <code>freemem</code> field should be set to the number of bytes of free memory, and the <code>nproc</code> field should be set to the number of processes whose <code>state</code> is not <code>UNUSED</code>. We provide a test program <code>sysinfotest</code>; you pass this assignment if it prints “sysinfotest: OK”.</p>
+</blockquote>
+<p>新增一个系统调用<code>sysinfo</code>用来收集运行系统的信息。此系统调用接受一个参数：指向 <code>struct sysinfo</code> 的指针(<code>kernel/sysinfo.h</code>)。内核应该填写此结构体的字段：<code>freemem</code> 字段应该设为系统空闲内存的字节数，<code>nproc</code> 字段应该设为进程状态不为 <code>UNUSED</code> 的进程数量。题目规定，在执行此 sysinfo 系统调用之后，获取到当前系统的两项状态信息，其一为剩余可用空间的数量，其二为当前标记为 UNUSED 状态的进程数量。这两项状态信息需通过一个预先设定好的结构体来进行传递。根据提示，按照以下步骤完成实验。</p>
+<ul>
+<li><p>在Makefile中添加<code>$U/_sysinfotest</code> </p>
+</li>
+<li><p>运行 <code>make qemu</code>；<code>user/sysinfotest.c</code> 文件将无法编译。按照之前的任务一样添加系统调用 <code>sysinfo</code>。在 <code>user/user.h</code> 中声明 <code>sysinfo()</code> 的原型时，需要预声明 <code>struct sysinfo</code> 的存在。同时像完成Trace一样，进行声明和定义。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// user/user.h</span><br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sysinfo</span>;</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">sysinfo</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> sysinfo *)</span>; <br><br><span class="hljs-comment">// user/usys.pl</span><br>entry(<span class="hljs-string">&quot;sysinfo&quot;</span>);<br><br><span class="hljs-comment">// kernel/syscall.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SYS_sysinfo  23</span><br><br><span class="hljs-comment">// 除此之外还要更改syscall.c的数组</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><code>sysinfo</code> 需要将一个 <code>struct sysinfo</code> 结构体复制回用户空间；可以参考 <code>sys_fstat()</code>（<code>kernel/sysfile.c</code>）和 <code>filestat()</code>（<code>kernel/file.c</code>），了解如何使用 <code>copyout()</code> 进行复制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/file.c</span><br><br><span class="hljs-comment">// 定义一个函数 filestat，用于获取文件的元数据</span><br><span class="hljs-comment">// addr 是用户虚拟地址，指向一个 struct stat</span><br><span class="hljs-type">int</span><br><span class="hljs-title function_">filestat</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> file *f, uint64 addr)</span><br>&#123;<br>    <span class="hljs-comment">// 获取当前进程的指针 p</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">stat</span> <span class="hljs-title">st</span>;</span><br>    <span class="hljs-comment">// 如果文件的类型是 FD_INODE 或 FD_DEVICE</span><br>    <span class="hljs-keyword">if</span> (f-&gt;type == FD_INODE || f-&gt;type == FD_DEVICE) &#123;<br>        <span class="hljs-comment">// 调用 ilock 函数锁定文件的 inode</span><br>        ilock(f-&gt;ip);<br>        <span class="hljs-comment">// 调用 stati 函数获取文件的状态信息，并将结果存储在 st 中</span><br>        stati(f-&gt;ip, &amp;st);<br>        <span class="hljs-comment">// 调用 iunlock 函数解锁文件的 inode</span><br>        iunlock(f-&gt;ip);<br>        <span class="hljs-comment">// 通过 copyout 函数将 st 的内容复制到用户空间的 addr 地址</span><br>        <span class="hljs-keyword">if</span> (copyout(p-&gt;pagetable, addr, (<span class="hljs-type">char</span> *)&amp;st, <span class="hljs-keyword">sizeof</span>(st)) &lt; <span class="hljs-number">0</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>为了收集空闲内存的数量，在 <code>kernel/kalloc.c</code> 中添加一个函数。 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/kalloc.c</span><br><br><span class="hljs-type">void</span> *<br><span class="hljs-title function_">kalloc</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>  <span class="hljs-comment">// 用于分配内核内存</span><br>&#123;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">run</span> *<span class="hljs-title">r</span>;</span>  <span class="hljs-comment">// run是一个单链表</span><br>  acquire(&amp;kmem.lock);  <span class="hljs-comment">// 申请并获取 kmem.lock</span><br>  r = kmem.freelist;  <span class="hljs-comment">// 将 kmem.freelist 的值赋给 r，表示获取空闲内存列表的头部</span><br>  <span class="hljs-keyword">if</span>(r)  <span class="hljs-comment">// 如果 r 不为 NULL，表示成功获取到内核内存</span><br>    kmem.freelist = r-&gt;next;  <span class="hljs-comment">// 将 kmem.freelist 的头指针指向下一个空闲内存块</span><br>  release(&amp;kmem.lock);  <span class="hljs-comment">// 释放 kmem.lock 信号量</span><br>  <span class="hljs-keyword">if</span>(r)  <span class="hljs-comment">// 如果成功申请到了内核内存</span><br>    <span class="hljs-built_in">memset</span>((<span class="hljs-type">char</span>*)r, <span class="hljs-number">5</span>, PGSIZE);  <span class="hljs-comment">// 将申请到的内核内存填充为 5</span><br>  <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span>*)r;  <span class="hljs-comment">// 返回申请到的内核内存的指针</span><br>&#125;<br><br><span class="hljs-comment">// 参考kalloc函数完成，返回空闲内存大小</span><br>uint64<br><span class="hljs-title function_">freesize</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">run</span> * <span class="hljs-title">n</span>;</span><br>    <span class="hljs-type">int</span> num = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 申请并获取 kmem.lock</span><br>    acquire(&amp;kmem.lock);<br>    n = kmem.freelist;<br>    <span class="hljs-keyword">while</span>(n)&#123;<br>        n = n -&gt; next;<br>        num++;<br>    &#125;<br>    <span class="hljs-comment">// 释放 kmem.lock 信号量</span><br>    release(&amp;kmem.lock);<br>    <span class="hljs-comment">// 计算空闲内存大小</span><br>    <span class="hljs-type">int</span> totalSize = num * PGSIZE;<br>    <span class="hljs-keyword">return</span> totalSize;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>为了收集进程的数量，在 <code>kernel/proc.c</code> 中添加一个函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/proc.c</span><br><span class="hljs-comment">// 参考proc.c中的procdump函数</span><br><br>uint64<br><span class="hljs-title function_">freenum</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span>;</span><br>    <span class="hljs-type">int</span> procnum = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 遍历进程，对进程状态为UNUSED的进行计数</span><br>    <span class="hljs-keyword">for</span>(p = proc; p &lt; &amp;proc[NPROC]; p++)&#123;<br>        <span class="hljs-keyword">if</span>(p-&gt;state == UNUSED)&#123;<br>        procnum++;	<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> procnum;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在<code> kernel/sysproc.c</code> 中完成<code> sysinfo</code> 的系统调用函数。根据提示，需要调用上面添加的两个函数以对<code>sysinfo</code>结构体进行赋值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/sysproc.c</span><br><br><span class="hljs-comment">// 补充头文件 获取sysinfo结构体</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sysinfo.h&quot;</span></span><br><br>uint64<br><span class="hljs-title function_">sys_sysinfo</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  uint64 addr;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sysinfo</span> <span class="hljs-title">sysInfo</span>;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>  argaddr(<span class="hljs-number">0</span>,&amp;addr);<br><span class="hljs-comment">// 调用上面完成的两个方法获取空闲内存大小和进程数量</span><br>  sysInfo.freemem = freesize();<br>  sysInfo.nproc = freenum();<br>  <span class="hljs-comment">// 参考 kernel/file.c 的filestat方法，返回结构体到用户空间</span><br>  <span class="hljs-keyword">if</span>(copyout(p-&gt;pagetable,addr,(<span class="hljs-type">char</span> *)&amp;sysInfo,<span class="hljs-keyword">sizeof</span>(sysInfo))&lt;<span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>各种报错，第一次由于忘了把函数在defs.h中定义，第二次由于<code>p-&gt;state == UNUSED</code>，应该是不为UNUSED。修改后成功通过批阅。</p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab2_5.png" alt="image.png" class="lazyload">
+</li>
+<li><p>总的来说，本章学习了操作系统实现强隔离的原因及方式，了解了xv6操作系统的用户空间和内核空间，阅读了xv6系统kernel和user中有关第一个进程启动的相关源码，了解了系统的启动过程，以及在用户空间中如何完成系统调用。实验中完成了两个系统调用，第一章的实验是在用户空间中实现，意在了解学习操作系统的功能，本章实验在内核空间实现，学习了内核空间实现系统调用的具体过程。</p>
+</li>
+</ul>
+
+	</article>
+
+	 
+    <div class="kira-post-copyright">
+        <strong>本文作者：</strong>YangYuchen<br>
+        <strong>本文链接：</strong><a href="https://www.littlewhite.site/xv6%E5%AD%A6%E4%B9%A0%EF%BC%8CLab2-240711/" title="https:&#x2F;&#x2F;www.littlewhite.site&#x2F;xv6学习，Lab2-240711&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;www.littlewhite.site&#x2F;xv6学习，Lab2-240711&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+  
+	<div class="kira-post-nav">
+		<nav class="post-nav">
+			
+		</nav>
+	</div>
+	
+	<div class="kira-post-meta kira-rainbow">
+		
+		
+			<a class="kirafont icon-tag-fill -none-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a>
+		
+	</div>
+	
+		<script src="/js/kira-code-copy.js"></script>
+	
+	
+	<div class="kira-post-footer">
+</div>
+	
+</div>
+
+				</div>
+			</div>
+			<div class="kira-right-column">
+	<a onclick="document.querySelector('#kira-top-header').scrollIntoView({behavior: 'smooth'});" class="kira-backtotop" aria-label="回到顶部" title="回到顶部">
+		<button class="mdui-fab mdui-ripple">
+			<i class="kirafont icon-caret-up"></i>
+		</button>
+	</a>
+</div>
+
+		</div>
+	</body>
+</html>
