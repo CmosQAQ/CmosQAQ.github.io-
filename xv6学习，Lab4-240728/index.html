@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html 
+	lang="zh_CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+<link rel="stylesheet" href="/css/layout.css">
+
+		
+		<title> xv6学习，Lab4-Traps -  Cmosite</title>
+		<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+		<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+		<!-- lazyload -->
+		<script src="https://unpkg.com/lazysizes@5.1.0/lazysizes.min.js"></script>
+		<!-- smooth-scrolling -->
+		<script src="https://unpkg.com/smooth-scrolling.js@1.0.0"></script>
+		<!-- highlight -->
+		<link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/atom-one-dark.min.css" />
+		<script src="//unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+		<!-- 预置 kiraicon -->
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		
+			<link rel="stylesheet" href="//at.alicdn.com/t/font_3299330_el19bsi97h8.css" crossorigin />
+		
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		<link
+			rel="shortcut icon"
+			href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			type="image/png"
+		/>
+		<link rel="stylesheet" href="/deps/css/APlayer.min.css">
+		
+		<script src="/deps/js/APlayer.min.js"></script>
+		<script src="/deps/js/Meting.min.js"></script>
+	<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<div
+			class="kira-background"
+			style="background-image: url('https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/bk2.jpg')"
+		></div>
+		<div class="kira-header">
+    <a
+        class="kira-drawer-button mdui-ripple"
+        title="导航栏"
+        onclick="document.querySelector('.kira-sidebar-modal').classList.add('show');document.querySelector('.kira-sidebar#sidebar').classList.add('show');"
+    >
+        <i class="kirafont icon-menu"></i>
+    </a>
+    <a href="/" title="Cmosite">
+        <img
+			src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			alt="YangYuchen"
+		/>
+    </a>
+</div>
+		<div class="kira-body">
+			<div class="kira-sidebar" id="sidebar">
+	<div class="kira-avatar mdui-ripple">
+		<a target="_blank" rel="noopener" href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png" title="YangYuchen">
+			<img
+				src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+				alt="YangYuchen"
+			/>
+		</a>
+	</div>
+	<div class="kira-count">
+		<div><span>文章</span>15</div>
+		<div><span>标签</span>4</div>
+		<div><span>分类</span>0</div>
+	</div>
+	<div class="kira-list">
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/"
+			title="回到首页"
+		>
+			<i
+				class="kirafont icon-home"
+			></i>
+			<div class="kira-list-item-content">回到首页</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/archive.html"
+			title="文章归档"
+		>
+			<i
+				class="kirafont icon-container"
+			></i>
+			<div class="kira-list-item-content">文章归档</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/about.html"
+			title="关于本人"
+		>
+			<i
+				class="kirafont icon-user"
+			></i>
+			<div class="kira-list-item-content">关于本人</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/friends.html"
+			title="我的朋友"
+		>
+			<i
+				class="kirafont icon-team"
+			></i>
+			<div class="kira-list-item-content">我的朋友</div>
+		</a>
+		
+	</div>
+	<aside id="kira-sidebar">
+		 <div class="kira-widget-wrap">
+	<div class="kira-widget kira-social">
+		<a
+			class="mdui-ripple"
+			href="/qqinfo.html"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ'}"
+			style="
+				color: rgb(49, 174, 255);
+				background-color: rgba(49, 174, 255, .1);
+			"
+		>
+			<i
+				class="kirafont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .15);
+			"
+		>
+			<i
+				class="kirafont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'Gitee'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-gitee"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'Bili'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-bilibili"
+			></i> </a
+		>
+	</div>
+</div>
+    
+<div class="kira-widget-wrap">
+	<div id="randomtagcloud" class="kira-widget tagcloud kira-rainbow"><a href="/tags/%E6%97%A0%E7%94%A8/" style="font-size: 15px;">无用</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 20px;">编程</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 15px;">英语</a></div>
+	
+</div>
+
+  
+<div class="kira-widget-wrap">
+	<h3 class="kira-widget-title">文章归档</h3>
+	<div class="kira-widget">
+		<ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">9</span></li></ul>
+	</div>
+</div>
+
+ 
+	</aside>
+	<div class="kira-copyright">
+		&copy; 2024
+		<a href="/">YangYuchen</a
+		>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> &
+		<!-- TODO: github 链接 -->
+		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
+		<br />
+		
+		
+	</div>
+</div>
+<div class="kira-sidebar-modal" id="sidebar-modal" onclick="(function(self) {
+	self.classList.remove('show');
+	document.querySelector('.kira-sidebar.show#sidebar').classList.remove('show');
+})(this)"></div>
+			<div class="kira-content">
+				<div id="kira-top-header"></div>
+				<div class="kira-main-content">
+					
+<link rel="stylesheet" href="/css/kira-image.css">
+
+<script src="/js/kira-image.js"></script>
+<div class="kira-image">
+    <div class="kira-image-modal">
+        <div class="kira-image-header">
+            <div class="kira-image-counter"></div>
+            <div class="kira-image-title"></div>
+            <div class="kira-image-operation">
+                <div class="kira-image-operation-button" id="kira-image-operation-button-zoom">
+                    <i class="kirafont icon-zoom-in"></i>
+                </div>
+                <div class="kira-image-operation-button" id="kira-image-operation-button-close">
+                    <i class="kirafont icon-close"></i>
+                </div>
+            </div>
+        </div>
+        <div class="kira-image-container">
+            <div class="kira-image-prev-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-left"></i>
+                </div>
+            </div>
+            <div class="kira-image-list">
+                <div class="kira-image-prev">
+                    <img />
+                </div>
+                <div class="kira-image-now">
+                    <img />
+                </div>
+                <div class="kira-image-next">
+                    <img />
+                </div>
+            </div>
+            <div class="kira-image-next-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kira-post">
+	<article>
+		
+		<div class="kira-post-cover">
+			<img
+				data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab1bg.png"
+				data-sizes="auto"
+				alt="xv6学习，Lab4-Traps"
+				class="lazyload kira-post-cover-image disabled-kira-image"
+			/>
+			<h1>xv6学习，Lab4-Traps</h1>
+		</div>
+		
+		<div class="kira-post-meta kira-rainbow" style="margin:10px 0!important;">
+			<a><i class="kirafont icon-calendar-fill"></i>2024年07月28日</a>
+			<a><i class="kirafont icon-areachart"></i>8.8k 字</a>
+			<a><i class="kirafont icon-time-circle-fill"></i>大概 38 分钟</a>
+		</div>
+		<h2><span id="四-lab4-traps">四、Lab4: traps</span></h2><p>根据实验要求，先阅读阅读 xv6 书籍的第 4 章，以及相关的源文件： kernel&#x2F;trampoline.S：涉及从用户空间切换到内核空间以及反向切换的汇编代码 kernel&#x2F;trap.c：处理所有中断的代码，以下是这部分的内容总结：</p>
+<ol>
+<li><p><strong>整体内容</strong></p>
+<p>有三种事件会导致 CPU 暂停普通指令的执行，并强制将控制权转移到处理该事件的特殊代码上。一种情况是系统调用，当用户程序执行 <code>ecall</code> 指令以请求内核为其执行某些操作时。另一种情况是异常：指令（用户或内核的）执行了非法操作，例如除以零或使用无效的虚拟地址。第三种情况是设备中断，当设备发出需要关注的信号时，例如当磁盘硬件完成读或写请求时。</p>
+<p>本书将陷阱（trap）作为这些情况的统称。通常，在发生trap时正在执行的任何代码稍后都需要恢复执行，并且不应该意识到发生了任何特殊情况（也就是说，先把如上图所示的用户空间的这32位寄存器，以及其它的一些寄存器存储起来，这样才能保证才中断结束后恢复到原来的执行状态，在进行trap时我们仍然要保证隔离性和安全性），我们通常希望陷阱是透明的（意思就是让用户空间的程序感受不到trap的存在）。</p>
+<p>Xv6 的陷阱处理分为四个阶段：RISC-V CPU 采取的硬件操作、一些为内核 C 代码做准备的汇编指令、一个决定如何处理陷阱的 C 函数，以及系统调用或设备驱动服务例程。虽然这三种陷阱类型存在共性，这表明内核可以用单一的代码路径来处理所有陷阱，但实际上，为三种不同的情况（来自用户空间的陷阱、来自内核空间的陷阱和定时器中断）设置单独的代码会更方便。处理陷阱的内核代码（汇编语言或 C 语言）通常被称为处理程序；第一个处理程序指令通常用汇编语言（而不是 C 语言）编写，有时被称为向量。</p>
+</li>
+<li><p><strong>RISC-V trap machinery</strong></p>
+<p>在进入trap前，CPU的所有状态都设置成处于用户空间的状态。  如下图（RISC-V Calling Convention Table 18.1）所示，RISC-V 调用约定在可能的情况下通过寄存器传递参数。为此，最多可使用八个整数寄存器 a0 - a7，以及最多八个浮点寄存器 fa0 - fa7,在汇编代码中我们使用图中的ABI Name 。</p>
+<p>每个 RISC-V CPU 都有一组控制寄存器，内核通过写入这些寄存器来告知 CPU 如何处理trap，并且内核可以通过读取这些寄存器来了解已经发生的trap。riscv.h（kernel&#x2F;riscv.h:1）包含了 Xv6 所使用的定义。寄存器是用来进行读取和运算的最快的方式，这就是为什么我们从用户空间调用ecall进入内核空间时使用寄存器来传递参数，当函数参数超过8个时就需要使用内存了。最后一列Saver，Caller寄存器在函数调用时不会保存，但Callee寄存器在函数调用时会自动保存。除了这些之外，RISC-V还包含：</p>
+<ul>
+<li>程序计数器（Program counter register）。</li>
+<li>SATP寄存器（上一章讲过，包含指向page table的物理内存地址）。</li>
+<li>Mode（说明是用户空间还是内核空间）。</li>
+<li>STVEC寄存器（内核将其陷阱处理程序的地址写入此处；RISC-V 会跳转到 stvec 中的地址来处理陷阱）。</li>
+<li>SEPC（当发生陷阱时，RISC-V 会将程序计数器的值保存到此处，因为此时程序计数器会被 stvec 中的值覆盖）。</li>
+<li>SSCRATCH寄存器（陷阱处理程序代码使用 sscratch 来避免在保存用户寄存器之前将其覆盖）。</li>
+<li>SCAUSE（RISC-V 会在此处放入一个数字，用于描述引发陷阱的原因）</li>
+<li>SRET（从陷阱返回，指令会将 sepc 复制到程序计数器中，内核可以通过写入 sepc 来控制 sret 的返回位置）。</li>
+<li>SSTATUS：SSTATUS 中的 SIE 位控制设备中断是否启用。如果内核清除 SIE，RISC-V 会推迟设备中断，直到内核设置 SIE。SPP 位表示陷阱是来自用户模式还是监督模式，并控制 sret 返回的模式。</li>
+</ul>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_1.png" alt="image.png" class="lazyload">
+
+<p>切换到监督者模式后才能处理上述寄存器，在用户模式下无法读取或写入它们，除此之外监督者模式可以对PTE_U没有置位的进行处理，而用户模式就只能读取PTE_U置位的PTE，需要注意的是监督者模式并不能对任意的物理内存进行修改。</p>
+</li>
+<li><p><strong>Traps from user space（用户空间的trap）</strong></p>
+<p>最常见的trap来自于用户程序中进行系统调用（Ecall指令），Ecall将系统从用户模式改为监督者模式；将程序计数器的值保存在SEPC寄存器；跳转到STVEC寄存器指向的指令，除了ecall外，一些非法操作，有设备产生中断，都会发生trap。具体的执行过程是一个十分复杂的过程，xv6的官方手册中用语言描述的这一过程，如下：</p>
+<p>从用户空间产生的陷阱的高级处理路径是：先到 uservec（ <code>kernel/trampoline.S:21</code>），然后到 usertrap（<code> kernel/trap.c:37</code>）；在返回时，先经过 usertrapret（<code>kernel/trap.c:90），然后到 userret（位于 kernel/trampoline.S:101</code>）。 Xv6 的陷阱处理设计的一个主要限制是，RISC-V 硬件在强制产生陷阱时不会切换页表。这意味着 stvec 中的陷阱处理程序地址在用户页表中必须有一个有效的映射，因为在陷阱处理代码开始执行时，生效的是用户页表。此外，Xv6 的陷阱处理代码需要切换到内核页表；为了在切换后能够继续执行，内核页表也必须为 stvec 所指向的处理程序有一个映射。 Xv6 使用一个跳板页（trampoline page）来满足这些要求。跳板页包含 uservec，即 stvec 所指向的 Xv6 陷阱处理代码。跳板页在每个进程的页表中都被映射到地址 TRAMPOLINE，该地址位于虚拟地址空间的顶部，因此它会在程序为自身使用的内存之上。跳板页在内核页表中也被映射到地址 TRAMPOLINE。由于跳板页被映射到用户页表中（没有 PTE_U 标志），所以陷阱可以在监督模式下从那里开始执行。由于跳板页在内核地址空间中的相同地址被映射，所以陷阱处理程序在切换到内核页表后可以继续执行。</p>
+<p>用户态陷阱处理程序 <code>uservec</code> 的代码位于 <code>trampoline.S</code>（<code>kernel/trampoline.S:21</code>）中。当 <code>uservec</code> 开始执行时，所有 32 个寄存器都包含被中断的用户代码所拥有的值。这 32 个值需要被保存到内存的某个地方，以便在陷阱返回到用户空间时能够被恢复。向内存中存储需要使用一个寄存器来保存地址，但在此时没有可用的通用寄存器，幸运的是，RISC-V 以 <code>sscratch</code> 寄存器的形式提供了帮助。<code>uservec</code> 开头的 <code>csrw</code> 指令将 <code>a0</code> 保存到 <code>sscratch</code> 中。 现在 <code>uservec</code> 有了一个寄存器（<code>a0</code>）可以使用。<code>uservec</code> 的下一个任务是保存 32 个用户寄存器。内核为每个进程分配一页内存用于 <code>trapframe</code> 结构，该结构（除其他内容外）有空间来保存 32 个用户寄存器（<code>kernel/proc.h:43</code>）。因为 <code>satp</code> 仍然指向用户页表，所以 <code>uservec</code> 需要 <code>trapframe</code> 在用户地址空间中进行映射。Xv6 在每个进程的用户页表中，将该进程的 <code>trapframe</code> 映射到虚拟地址 <code>TRAPFRAME</code>；<code>TRAPFRAME</code> 就在 <code>TRAMPOLINE</code> 下方。 进程的 <code>p-&gt;trapframe</code> 也指向 <code>trapframe</code>，不过是其物理地址，以便内核可以通过内核页表来使用它。 因此，<code>uservec</code> 将地址 <code>TRAPFRAME</code> 加载到 <code>a0</code> 中，并将所有用户寄存器保存到那里，包括从 <code>sscratch</code> 中读回的用户的 <code>a0</code>。 <code>trapframe</code> 包含当前进程的内核栈地址、当前 CPU 的 <code>hartid</code>、<code>usertrap</code> 函数的地址以及内核页表的地址。<code>uservec</code> 检索这些值，将 <code>satp</code> 切换到内核页表，并调用 <code>usertrap</code>。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs asm">.globl uservec<br>uservec:    <br>    # trap.c会将stvec设置为指向此处，因此来自用户空间的陷阱会从此处开始，<br>    # 处于监督者模式，但使用的是用户页表。<br><br>    # 将用户的 a0 保存到 sscratch 中，以便<br>    # a0 可用于获取 TRAPFRAME。<br>    csrw sscratch, a0<br><br>    # 每个进程都有一个单独的p-&gt;trapframe内存区域，<br>    # 但在每个进程的用户页表中，它都映射到相同的虚拟地址<br>    li a0, TRAPFRAME<br><br>    # 将用户寄存器保存到TRAPFRAME中，此处省略下面若干行<br>    sd ra, 40(a0)<br>    sd sp, 48(a0)<br>    sd gp, 56(a0)<br>    sd tp, 64(a0)<br>    <br>    # 将用户的a0保存到p-&gt;trapframe-&gt;a0 中<br>    csrr t0, sscratch<br>    sd t0, 112(a0)<br><br>    # 从 p-&gt;trapframe-&gt;kernel_sp初始化内核栈指针<br>    ld sp, 8(a0)<br><br>    # 使 tp 保存当前的 hartid，从p-&gt;trapframe-&gt;kernel_hartid 中获取<br>    ld tp, 32(a0)<br><br>    # 从 p-&gt;trapframe-&gt;kernel_trap加载 usertrap() 的地址<br>    ld t0, 16(a0)<br><br>    # 从 p-&gt;trapframe-&gt;kernel_satp 中获取内核页表地址<br>    ld t1, 0(a0)<br><br>    # 等待之前的任何内存操作完成，以便它们使用用户页表。<br>    sfence.vma zero, zero<br><br>    # 安装内核页表。<br>    csrw satp, t1<br><br>    # 从 TLB 中刷新现在已过时的用户条目。<br>    sfence.vma zero, zero<br><br>    # 跳转到 usertrap()，该函数不会返回<br>    jr t0 <br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><code>usertrap</code>的任务是确定陷阱的原因，进行处理并返回（<code>kernel/trap.c:37</code>）。它首先更改<code>stvec</code>，以便在内核中发生陷阱时由<code>kernelvec</code>而不是<code>uservec</code>来处理。它保存<code>sepc</code>寄存器（保存的用户程序计数器），因为<code>usertrap</code>可能会调用<code>yield</code>来切换到另一个进程的内核线程，而该进程可能会返回到用户空间，在这个过程中它会修改<code>sepc</code>。如果陷阱是一个系统调用，<code>usertrap</code>会调用<code>syscall</code>来处理它；如果是设备中断，就调用<code>devintr</code>；否则，这是一个异常，内核会杀死出错的进程。系统调用路径会将保存的用户程序计数器加四，因为在RISC-V中，对于系统调用，程序指针会指向<code>ecall</code>指令，但用户代码需要从后续指令继续执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/trap.c:37</span><br><span class="hljs-comment">// 处理来自用户空间的中断、异常或系统调用。</span><br><span class="hljs-comment">// 从上方trampoline.S中的uservec调用</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">usertrap</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> which_dev = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">// 如果不是从用户模式进入，触发panic</span><br>  <span class="hljs-keyword">if</span>((r_sstatus() &amp; SSTATUS_SPP)!= <span class="hljs-number">0</span>)<br>    panic(<span class="hljs-string">&quot;usertrap: not from user mode&quot;</span>);<br>  <span class="hljs-comment">// 将中断和异常发送到 kerneltrap()，因为现处于在内核中</span><br>  w_stvec((uint64)kernelvec);<br>  <span class="hljs-comment">// 获取当前进程</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>  <span class="hljs-comment">// 保存用户程序计数器。</span><br>  p-&gt;trapframe-&gt;epc = r_sepc();<br>  <br>  <span class="hljs-keyword">if</span>(r_scause() == <span class="hljs-number">8</span>)&#123;<br>    <span class="hljs-comment">// 系统调用</span><br>    <span class="hljs-comment">// 如果进程已被标记为终止，退出并返回 -1</span><br>    <span class="hljs-keyword">if</span>(killed(p))<br>      <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);  <br>    <span class="hljs-comment">// sepc 指向 ecall 指令，但我们想要指向到下一条指令</span><br>    p-&gt;trapframe-&gt;epc += <span class="hljs-number">4</span>;<br>    <span class="hljs-comment">// 中断会改变 sepc、scause 和 sstatus，所以现在我们完成了对这些寄存器的操作后才启用中断</span><br>    intr_on();<br>    <span class="hljs-comment">// 执行系统调用</span><br>    syscall();  <br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((which_dev = devintr())!= <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-comment">// ok</span><br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 打印出意外的异常原因和进程ID并终止进程</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;usertrap(): unexpected scause %p pid=%d\n&quot;</span>, r_scause(), p-&gt;pid);  <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;            sepc=%p stval=%p\n&quot;</span>, r_sepc(), r_stval());<br>    setkilled(p);<br>  &#125;<br>  <span class="hljs-comment">// 如果进程已被标记为终止，退出并返回 -1</span><br>  <span class="hljs-keyword">if</span>(killed(p))<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);  <br><br>  <span class="hljs-comment">// 如果这是一个定时器中断，放弃 CPU。</span><br>  <span class="hljs-keyword">if</span>(which_dev == <span class="hljs-number">2</span>)<br>    yield();  <span class="hljs-comment">// 让出 CPU</span><br>  <span class="hljs-comment">// 进行用户陷阱返回的处理</span><br>  usertrapret();  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在返回用户空间的过程中，第一步是调用<code>usertrapret</code>（<code>kernel/trap.c:90</code>）。这个函数设置RISC-V控制寄存器，为从用户空间未来可能发生的陷阱做准备。这包括将<code>stvec</code>更改为指向<code>uservec</code>，准备<code>uservec</code>所依赖的<code>trapframe</code>字段，并将<code>sepc</code>设置为之前保存的用户程序计数器。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/trap.c:90</span><br><span class="hljs-comment">// 返回用户空间</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">usertrapret</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-comment">// 获取当前进程</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();  <br>  <span class="hljs-comment">// 把trap的处理方式的从kerneltrap()切换到usertrap()，</span><br>  <span class="hljs-comment">// 在回到用户空间之前关闭中断，在用户空间中usertrap()是正确的处理程序</span><br>  intr_off();<br>  <span class="hljs-comment">// 将系统调用、中断和异常发送到trampoline.S中的uservec</span><br>  uint64 trampoline_uservec = TRAMPOLINE + (uservec - trampoline);<br>  <span class="hljs-comment">// 设置stvec为 trampoline_uservec</span><br>  w_stvec(trampoline_uservec);  <br>  <span class="hljs-comment">// 设置当进程下一次陷入内核时 uservec 所需的陷阱帧（trapframe）值</span><br>  p-&gt;trapframe-&gt;kernel_satp = r_satp();<br>  p-&gt;trapframe-&gt;kernel_sp = p-&gt;kstack + PGSIZE;<br>  p-&gt;trapframe-&gt;kernel_trap = (uint64)usertrap;<br>  p-&gt;trapframe-&gt;kernel_hartid = r_tp();<br>  <span class="hljs-comment">// 设置 trampoline.S 的 sret 用于进入用户空间的寄存器。</span><br>  <span class="hljs-comment">// 将 S 先前特权模式设置为用户模式。</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> x = r_sstatus();<br>  x &amp;= ~SSTATUS_SPP; <span class="hljs-comment">// 将SPP清零以进入用户模式</span><br>  x |= SSTATUS_SPIE; <span class="hljs-comment">// 在用户模式下启用中断</span><br>  w_sstatus(x);<br>  <span class="hljs-comment">// 将Sepc设置为保存的用户程序计数器</span><br>  w_sepc(p-&gt;trapframe-&gt;epc);<br>  <span class="hljs-comment">// 告知trampoline.S要切换到的用户页表。</span><br>  uint64 satp = MAKE_SATP(p-&gt;pagetable);<br>  <span class="hljs-comment">// 跳转到内存顶部的 trampoline.S 中的 userret，它会切换到用户页表，恢复用户寄存器，并使用 sret 切换到用户模式。</span><br>  uint64 trampoline_userret = TRAMPOLINE + (userret - trampoline);<br>  ((<span class="hljs-type">void</span> (*)(uint64))trampoline_userret)(satp);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后，<code>usertrapret</code>在同时映射到用户和内核页表的跳板页上调用<code>userret</code>；这样做的原因是<code>userret</code>中的汇编代码会切换页表。 <code>usertrapret</code>对<code>userret</code>的调用在<code>a0</code>中传递一个指向进程的用户页表的指针（<code>kernel/trampoline.S:101</code>）。<code>userret</code>将<code>satp</code>切换到进程的用户页表。回想一下，用户页表将跳板页和<code>TRAPFRAME</code>进行映射，但不会映射内核中的其他内容。用户和内核页表中在相同虚拟地址处的跳板页映射使得<code>userret</code>在更改<code>satp</code>后能够继续执行。从这一点开始，<code>userret</code>唯一可以使用的数据是寄存器内容和<code>trapframe</code>的内容。<code>userret</code>将<code>TRAPFRAME</code>的地址加载到<code>a0</code>中，通过<code>a0</code>从<code>trapframe</code>中恢复保存的用户寄存器，恢复保存的用户<code>a0</code>，并执行<code>sret</code>以返回到用户空间（在第二章学习过，<code>sret</code>是唯一可以返回用户空间的方法）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs asm">.globl userret<br>userret:<br>        # 由 trap.c 中的 usertrapret() 调用，用于从内核切换到用户模式<br>        # 切换到用户页表<br>        sfence.vma zero, zero<br>        csrw satp, a0<br>        sfence.vma zero, zero<br>        <br>        li a0, TRAPFRAME  #将a0置为 TRAPFRAME 的地址<br><br>        # 从 TRAPFRAME 中恢复除 a0 以外的所有寄存器，省略若干行<br>        ld ra, 40(a0)<br>        ld sp, 48(a0)<br>        ld gp, 56(a0)<br>        ld tp, 64(a0)<br><br>        # 恢复用户的a0<br>        ld a0, 112(a0)<br>        # 返回用户模式和用户程序计数器。<br>        # usertrapret()已经设置了sstatus和sepc<br>        sret<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p><strong>Traps from kernel space（来自内核空间的trap）</strong></p>
+<p>Xv6 根据执行的是用户代码还是内核代码，对 CPU 陷阱寄存器的配置略有不同。当内核在 CPU 上执行时，内核将 <code>stvec</code> 指向 <code>kernelvec</code> 处的汇编代码（<code>kernel/kernelvec.S:12</code>）。由于 xv6 已经在内核中，<code>kernelvec</code> 可以依赖 <code>satp</code> 被设置为内核页表，并且栈指针指向一个有效的内核栈。<code>kernelvec</code> 将所有 32 个寄存器压入栈中，稍后将从栈中恢复它们，以便被中断的内核代码能够不受干扰地继续执行。 <code>kernelvec</code> 将寄存器保存到被中断的内核线程的栈上，这是有意义的，因为寄存器的值属于该线程。如果陷阱导致切换到不同的线程，这一点尤为重要——在这种情况下，陷阱实际上会从新线程的栈中返回，而被中断线程的保存寄存器会安全地留在其自己的栈上。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs asm">.globl kerneltrap<br>.globl kernelvec<br>.align 4<br>kernelvec:<br>        # 为保存寄存器腾出空间。<br>        addi sp, sp, -256<br><br>        # 保存寄存器，省略了若干行<br>        sd ra, 0(sp)<br>        sd sp, 8(sp)<br><br>        # 调用trap.c中的陷阱处理函数<br>        call kerneltrap<br><br>        # 恢复寄存器，省略若干行<br>        ld ra, 0(sp)<br>        ld sp, 8(sp)<br>        ld gp, 16(sp)<br>        # 不恢复 tp（包含 hartid），以防我们切换了 CPU<br>        ld t0, 32(sp)<br>        ld t1, 40(sp)<br><br>        addi sp, sp, 256<br>        # 返回内核中我们之前正在做的事情。<br>        sret<br></code></pre></td></tr></table></figure>
+
+<p>在保存寄存器后，<code>kernelvec</code> 跳转到 <code>kerneltrap</code>（<code>kernel/trap.c:135</code>）。<code>kerneltrap</code> 为两种类型的陷阱做好了准备：设备中断和异常。它调用 <code>devintr</code>（<code>kernel/trap.c:178</code>）来检查并处理前者。如果陷阱不是设备中断，那它一定是一个异常，如果在 xv6 内核中发生这种情况，那总是一个致命错误；内核会调用 <code>panic</code> 并停止执行。 如果 <code>kerneltrap</code> 是由于定时器中断而被调用，并且一个进程的内核线程正在运行（而不是调度器线程），那么 <code>kerneltrap</code> 会调用 <code>yield</code> 给其他线程一个运行的机会。在某个时刻，这些线程中的一个会进行 <code>yield</code>，让我们的线程及其 <code>kerneltrap</code> 再次恢复。第 7 章解释了在 <code>yield</code> 中会发生什么。 当 <code>kerneltrap</code> 的工作完成后，它需要返回到被陷阱中断的任何代码。因为 <code>yield</code> 可能会干扰 <code>sepc</code> 和 <code>sstatus</code> 中的先前模式，所以 <code>kerneltrap</code> 在开始时会保存它们。现在，它会恢复这些控制寄存器并返回到 <code>kernelvec</code>（<code>kernel/kernelvec.S:50</code>）。<code>kernelvec</code> 从栈中弹出保存的寄存器并执行 <code>sret</code>，<code>sret</code> 将 <code>sepc</code> 复制到 <code>pc</code> 中，从而恢复被中断的内核代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c"> kernel/trap.c:<span class="hljs-number">135</span><br><span class="hljs-comment">// 通过 kernelvec，内核代码中的中断和异常会来到这里，使用当前的内核栈。</span><br><span class="hljs-type">void</span> <br><span class="hljs-title function_">kerneltrap</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> which_dev = <span class="hljs-number">0</span>;<br>  uint64 sepc = r_sepc();<br>  uint64 sstatus = r_sstatus();<br>  uint64 scause = r_scause();<br>  <span class="hljs-comment">// 如果状态寄存器的SPP位为0，说明不是从监督者模式进入的，触发panic</span><br>  <span class="hljs-keyword">if</span> ((sstatus &amp; SSTATUS_SPP) == <span class="hljs-number">0</span>)<br>    panic(<span class="hljs-string">&quot;kerneltrap: not from supervisor mode&quot;</span>);<br>  <span class="hljs-comment">// 如果中断标志为1，说明中断是启用的，触发panic</span><br>  <span class="hljs-keyword">if</span> (intr_get()!= <span class="hljs-number">0</span>)<br>    panic(<span class="hljs-string">&quot;kerneltrap: interrupts enabled&quot;</span>);<br>  <span class="hljs-comment">// 判断是否为设备中断，并获取产生中断的设备编号</span><br>  <span class="hljs-keyword">if</span> ((which_dev = devintr()) == <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;scause %p\n&quot;</span>, scause);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;sepc=%p stval=%p\n&quot;</span>, r_sepc(), r_stval());<br>    panic(<span class="hljs-string">&quot;kerneltrap&quot;</span>);<br>  &#125;<br>  <span class="hljs-comment">// 如果是定时器中断，并且当前进程存在且处于运行状态，让出CPU</span><br>  <span class="hljs-keyword">if</span> (which_dev == <span class="hljs-number">2</span> &amp;&amp; myproc()!= <span class="hljs-number">0</span> &amp;&amp; myproc()-&gt;state == RUNNING)<br>    yield();<br>  <span class="hljs-comment">// yield() 可能导致一些陷阱发生，所以恢复陷阱寄存器，以供kernelvec.S的sepc指令使用。</span><br>  w_sepc(sepc);<br>  w_sstatus(sstatus);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Page-fault exceptions（页面错误异常）</strong></p>
+<p>Xv6 对异常的处理简单，在用户空间异常会终止进程，在内核异常会崩溃，而真正的操作系统会有更有趣的响应方式。以写时复制（COW）的 fork 操作为例，通过适当使用页表权限和页面错误，父进程和子进程可安全共享物理内存且最初映射为只读，写入时会引发页面错误异常，内核陷阱处理程序会进行相应处理。写时复制使 fork 操作更快，且应用程序无需修改即可受益。 </p>
+<p>页表和页面错误的结合开启了许多有趣的可能性。懒分配（lazy allocation）有两部分，一是记录内存增加但不实际分配，二是在页面错误时分配物理内存并映射到页表中，它的优势是避免为未使用页面做工作，可分散成本，但会带来页面错误的额外开销，可通过一些方式降低此成本。按需分页（demand paging）可提高应用程序启动的响应时间，内核可对其透明实现。当内存不足需分页到磁盘时，若没有空闲物理 RAM，内核需释放一个物理页面，驱逐代价高，分页在不频繁时性能最佳，且内核通常以对应用程序透明的方式实现到磁盘的分页。在空闲物理内存稀缺时，懒分配和按需分页特别有利，急切分配内存可能产生额外成本且有浪费的风险。此外还提到了自动扩展堆栈和内存映射文件等特性。</p>
+</li>
+<li><p><strong>真实情况</strong></p>
+<p>蹦床（trampoline）和陷阱帧（trapframe）可能看起来过于复杂。其背后的一个驱动因素是，RISC-V 在强制产生陷阱时有意尽可能少地进行操作，以便能够实现非常快速的陷阱处理，而这一点非常重要。因此，内核陷阱处理程序的前几条指令实际上必须在用户环境中执行：使用用户页表和用户寄存器内容。并且，陷阱处理程序最初并不知道一些有用的信息，例如正在运行的进程的标识或内核页表的地址。由于 RISC-V 提供了受保护的位置，内核可以在进入用户空间之前将信息存储在这些位置：sscratch 寄存器以及指向内核内存但由于缺少 PTE_U 而受到保护的用户页表项。Xv6 的蹦床和陷阱帧利用了这些 RISC-V 特性。 如果内核内存被映射到每个进程的用户页表中（并带有适当的 PTE 权限标志），那么就可以消除对特殊蹦床页的需求。这也将消除从用户空间陷入内核时进行页表切换的需要。反过来，这将允许内核中的系统调用实现利用当前进程的用户内存映射，使内核代码能够直接解引用用户指针。许多操作系统都使用了这些想法来提高效率。Xv6 避免使用它们，是为了减少由于不经意间使用用户指针而导致内核中出现安全漏洞的可能性，并减少为确保用户和内核虚拟地址不重叠而需要的一些复杂性。 生产型操作系统实现了写时复制的 fork、延迟分配、按需分页、分页到磁盘、内存映射文件等功能。此外，生产型操作系统会尝试将所有物理内存用于应用程序或缓存（例如，文件系统的缓冲区缓存，我们将在第 8.2 节中详细介绍）。在这方面，Xv6 比较简单：您希望您的操作系统使用您付费购买的物理内存，但 Xv6 并没有做到。此外，如果 Xv6 内存不足，它会向正在运行的应用程序返回错误或终止它，而不是例如驱逐另一个应用程序的一页。</p>
+</li>
+</ol>
+<h3><span id="1-risc-v-assembly-easy">1. RISC-V assembly (</span></h3><blockquote>
+<p>理解一些 RISC-V 汇编语言是很重要的，在 xv6 代码库中有一个文件 <code>user/call.c</code>。执行 <code>make fs.img</code> 命令会对其进行编译，并在 <code>user/call.asm</code> 中生成该程序的可读汇编版本。</p>
+</blockquote>
+<p>阅读 <code>call.asm</code> 中 <code>g</code>、<code>f</code> 和 <code>main</code> 函数的代码。RISC-V 的指令手册可以在<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.828/2023/reference.html">参考页面</a>上找到。在 <code>answers-traps.txt</code> 中回答以下问题：</p>
+<ul>
+<li><p>哪些寄存器包含函数的参数？例如，在 <code>main</code> 函数调用 <code>printf</code> 时，哪个寄存器保存着 13？</p>
+<p>如下图，使用gdb在printf处设置断点并查看寄存器信息，可知在a2中存着13。</p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_2.png" alt="image.png" class="lazyload">
+</li>
+<li><p>在 <code>main</code> 函数的汇编代码中，对函数 <code>f</code> 的调用在哪里？对 <code>g</code> 的调用在哪里？（提示：编译器可能会内联函数。）</p>
+<p>参考提示，查看call.asm汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs asm">void main(void) &#123;<br>  1c:    1141                	addi	sp,sp,-16<br>  1e:    e406                	sd	ra,8(sp)<br>  20:    e022                	sd	s0,0(sp)<br>  22:    0800                	addi	s0,sp,16<br>  printf(&quot;%d %d\n&quot;, f(8)+1, 13);<br>  24:    4635                	li	a2,13<br>  26:    45b1                	li	a1,12<br>  28:    00000517          	auipc	a0,0x0<br>  2c:    7c850513          	addi	a0,a0,1992 # 7f0 &lt;malloc+0xf0&gt;<br>  30:    00000097          	auipc	ra,0x0<br>  34:    612080e7          	jalr	1554(ra) # 642 &lt;printf&gt;<br>  exit(0);<br>  38:    4501                	li	a0,0<br>  3a:    00000097          	auipc	ra,0x0<br>  3e:    290080e7          	jalr	656(ra) # 2ca &lt;exit&gt;<br></code></pre></td></tr></table></figure>
+
+<p>编译器内联函数，直接把函数的运算结果存入了寄存器，而并非调用函数。</p>
+</li>
+<li><p>函数 <code>printf</code> 位于什么地址？</p>
+<p>位于0x642</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs asm">void<br>printf(const char *fmt, ...)<br>&#123;<br> 642:    711d                	addi	sp,sp,-96<br># .....<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 <code>main</code> 中执行 <code>jalr</code> 到 <code>printf</code> 之后，寄存器 <code>ra</code> 中的值是什么？</p>
+<p>参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/aLingYun/article/details/133255722?ops_request_misc=%7B%22request_id%22:%22172181362016800185877651%22,%22scm%22:%2220140713.130102334..%22%7D&request_id=172181362016800185877651&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-1-133255722-null-null.142%5Ev100%5Epc_search_result_base9&utm_term=auipc&spm=1018.2226.3001.4187">RISC-V 基础指令汇总-CSDN博客</a></p>
+<p><code>auipc ra,0x0</code>，就是把0x0 + pc存入ra中，pc是0x30,。</p>
+<p><code>jalr   1554(ra)</code> ，跳转到以ra为基地址偏移1554 &#x3D; 0x612 + 0x30 &#x3D; 0x642（其实后面给注释了），也就是上面代码块</p>
+<p>同时<code>ra</code> 的值设置为 <code>pc + 4</code>，即0x38</p>
+</li>
+<li><p>运行以下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0x00646c72</span>;<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;H%x Wo%s&quot;</span>, <span class="hljs-number">57616</span>, &amp;i);<br><br><span class="hljs-comment">// output</span><br><span class="hljs-comment">// He110 World</span><br></code></pre></td></tr></table></figure>
+
+<p>输出是什么？<a target="_blank" rel="noopener" href="https://www.asciitable.com/">这里有一个 ASCII 表</a>，可以将字节映射到字符。输出取决于 RISC-V 是小端模式这一事实。如果 RISC-V 是大端模式，为了得到相同的输出，您应该将 <code>i</code> 设置为什么值？您是否需要将 <code>57616</code> 更改为其他值？<a target="_blank" rel="noopener" href="http://www.webopedia.com/TERM/b/big_endian.html">这里有关于小端和大端的描述</a> 以及<a target="_blank" rel="noopener" href="https://www.rfc-editor.org/ien/ien137.txt">一个更奇特的描述</a>。</p>
+<p>在 big-endian 系统中，序列中最重要的值存储在最低存储地址（即第一个）处。在 little-endian 系统中，序列中的最低有效值首先被存储。</p>
+<p>57616  &#x3D; 0xe110，不管小端大端这一部分的输出不会变，所以57616不需要改变。</p>
+<p>0x00646c72 的二进制为 11001000110110001110010</p>
+<p>RISC-V 是小端模式，从低位开始读取，即01110010对应ASCII码114即r，后面也相同</p>
+<p>若为大端模式，则从高位开始读取，那应该换为0x726c64，这样才能得到相同的输出。</p>
+</li>
+<li><p>在以下代码中，在 <code>&#39;y=&#39;</code> 之后会打印什么？（注意：答案不是一个特定的值）为什么会这样？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;x=%d y=%d&quot;</span>, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_3.png" alt="image.png" class="lazyload">
+
+<p>使用gdb查看寄存器信息，如图所示，打印的是a2寄存器中的数，但是并没有给printf的第二个格式化输出，所以不是一个特定的值。</p>
+</li>
+</ul>
+<h3><span id="2backtrace-moderate">2.Backtrace ()</span></h3><blockquote>
+<p>对于调试而言，拥有一个回溯（backtrace）通常是很有用的：它是一个在错误发生点之上的栈上的函数调用列表。为了有助于回溯，编译器会生成机器代码，该代码在栈上维护一个与当前调用链中的每个函数相对应的栈帧（stack frame）。每个栈帧由返回地址和一个指向调用者栈帧的“帧指针”组成。寄存器 s0 包含一个指向当前栈帧的指针（实际上，它指向栈上保存的返回地址的地址加 8）。您的回溯应该使用帧指针在栈上向上遍历，并打印出每个栈帧中保存的返回地址。 </p>
+</blockquote>
+<p>根据实验提示完成实验：</p>
+<ul>
+<li><p>将您的 <code>backtrace()</code> 函数的原型添加到 <code>kernel/defs.h</code> 中，以便您可以在 <code>sys_sleep</code> 中调用 <code>backtrace</code>（和前几个实验一样）。</p>
+</li>
+<li><p>GCC 编译器将当前正在执行的函数的帧指针存储在寄存器 <code>s0</code> 中。在 <code>kernel/riscv.h</code> 中添加以下函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> uint64<br><span class="hljs-title function_">r_fp</span><span class="hljs-params">()</span><br>&#123;<br>    uint64 x;<br>    <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span><span class="hljs-params">(<span class="hljs-string">&quot;mv %0, s0&quot;</span> : <span class="hljs-string">&quot;=r&quot;</span> (x) )</span>;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>并在 <code>backtrace</code> 中调用此函数来读取当前帧指针。<code>r_fp()</code> 使用内联汇编来读取 <code>s0</code>。</p>
+</li>
+<li><p>在sys_proc.c的sys_sleep(void)方法中调用backtrace。</p>
+</li>
+<li><p>首先要知道这个函数返回的是什么，s0中存储的是对应函数stackframe的栈底，实验提示告诉我们<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.1810/2023/lec/l-riscv.txt">lecture notes</a>中有关于栈帧布局的图片，返回地址位于栈帧的帧指针的固定偏移量（-8）处，而保存的上一级的帧指针位于帧指针的固定偏移量（-16）处。</p>
+<p>您的 <code>backtrace()</code> 需要一种方法来识别它已经看到了最后一个栈帧，并应该停止。一个有用的事实是，为每个内核栈分配的内存由一个单一的页面对齐的页面组成，因此给定栈的所有栈帧都在同一页面上。您可以使用 <code>PGROUNDDOWN(fp)</code>（见 <code>kernel/riscv.h</code>）来确定帧指针所指的页面。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// lab4-2</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">backtrace</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;backtrace:\n&quot;</span>);<br>  <span class="hljs-comment">// 获取当前函数的stackframe</span><br>  uint64 fp = r_fp();<br>  <span class="hljs-comment">// 获取当前页面的栈底位置</span><br>  uint64 pageAddr = PGROUNDDOWN(fp);<br>  <span class="hljs-comment">// 所有stackframe占用的一个页面，最大地址不会超过+PGSIZE</span><br>  <span class="hljs-keyword">while</span>(fp &lt; pageAddr + PGSIZE)<br>  &#123;<br>    <span class="hljs-comment">// 上级函数的返回地址</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%p\n&quot;</span>, *(uint64*)(fp<span class="hljs-number">-8</span>));<br>    <span class="hljs-comment">// 上级函数的stackframe</span><br>    fp = *(uint64*)(fp<span class="hljs-number">-16</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_4.png" alt="image.png" class="lazyload"></li>
+</ul>
+<h3><span id="3alarm-hard">3.Alarm ()</span></h3><blockquote>
+<p>这是一个复杂的实验，为 xv6 添加一个功能，当一个进程使用 CPU 时间时，定期向该进程发出警报。</p>
+<p>您应该添加一个新的 <code>sigalarm(interval, handler)</code> 系统调用。如果应用程序调用 <code>sigalarm(n, fn)</code>，那么在该程序消耗的每 <code>n</code> 个 CPU 时间 “ticks” 后，内核应该使应用程序函数 <code>fn</code> 被调用。当 <code>fn</code> 返回时，应用程序应该从它中断的地方继续执行。在 xv6 中，一个“ticks”是一个相当任意的时间单位，由硬件定时器产生中断的频率决定。如果应用程序调用 <code>sigalarm(0, 0)</code>，内核应该停止生成周期性的警报调用。 在您的 xv6 代码库中，您会找到一个文件 <code>user/alarmtest.c</code>。将其添加到 <code>Makefile</code> 中。在您添加 <code>sigalarm</code> 和 <code>sigreturn</code> 系统调用（见下文）之前，它不会正确编译。 <code>alarmtest</code> 在 <code>test0</code> 中调用 <code>sigalarm(2, periodic)</code>，要求内核每 2 个“ticks”强制调用一次 <code>periodic()</code>，然后循环一段时间。您可以在 <code>user/alarmtest.asm</code> 中查看 <code>alarmtest</code> 的汇编代码，这可能对调试很有帮助。</p>
+</blockquote>
+<p><strong>Test0</strong>：</p>
+<p>首先修改内核，使其跳转到用户空间的警报处理程序，这将导致 Test0 打印出“alarm!”。</p>
+<ul>
+<li><p>您需要修改 Makefile，以使 alarmtest.c 作为 xv6 用户程序进行编译。在 user&#x2F;user.h 中应添加的正确声明：   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">sigalarm</span><span class="hljs-params">(<span class="hljs-type">int</span> ticks, <span class="hljs-type">void</span> (*handler)())</span>;  <br><span class="hljs-type">int</span> <span class="hljs-title function_">sigreturn</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>更新 user&#x2F;usys.pl（它会生成 user&#x2F;usys.S）、kernel&#x2F;syscall.h 和 kernel&#x2F;syscall.c，以使 alarmtest 能够调用 sigalarm 和 sigreturn 系统调用。目前，sys_sigreturn 只需返回 0。（前两步同lab2添加系统调用相同）</p>
+</li>
+<li><p>sys_sigalarm() 应该将警报间隔和处理函数的指针存储在 proc 结构（在 kernel&#x2F;proc.h 中）的新字段中。需要跟踪自上次调用（或到下次调用剩余）一个进程的警报处理程序以来经过了多少个“ticks”；需要在 struct proc 中添加一个新字段。您可以在 proc.c 中的 allocproc() 中初始化 proc 字段。 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/proc.h</span><br><span class="hljs-comment">// Per-process state</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">spinlock</span> <span class="hljs-title">lock</span>;</span><br>  <span class="hljs-comment">// 省略若干行</span><br>  <span class="hljs-type">char</span> name[<span class="hljs-number">16</span>];               <span class="hljs-comment">// Process name (debugging)</span><br>  uint64 ainterval;            <span class="hljs-comment">// 警报间隔</span><br>  uint64 handler;              <span class="hljs-comment">// 处理函数</span><br>  uint64 ticksnum;             <span class="hljs-comment">// 经过的ticks数量</span><br>&#125;;<br><br><span class="hljs-comment">// kernel/proc.c</span><br><span class="hljs-comment">// 放在allocproc的found后以及freeproc中</span><br><span class="hljs-comment">// 在初始化和释放进程时对这三个变量进行同步操作</span><br>p-&gt;ainterval = <span class="hljs-number">0</span>;<br>p-&gt;handler = <span class="hljs-number">0</span>;<br>p-&gt;ticksnum = <span class="hljs-number">0</span>;<br><br><span class="hljs-comment">// kernel/proc.c</span><br>uint64<br><span class="hljs-title function_">sys_sigalarm</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-comment">// 获取系统调用的两个参数</span><br>  <span class="hljs-comment">// 第一个参数是ainterval即间隔，第二个参数是指向函数的指针</span><br>  <span class="hljs-type">int</span> ainterval;<br>  uint64 handler;<br>  argint(<span class="hljs-number">0</span>,&amp;ainterval);<br>  argaddr(<span class="hljs-number">1</span>,&amp;handler);<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span>=</span>myproc();<br>  p-&gt;ticksnum = <span class="hljs-number">0</span>;<br>  p-&gt;ainterval = ainterval;<br>  p-&gt;handler = handler;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br>uint64<br><span class="hljs-title function_">sys_sigreturn</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>每一个“ticks”，硬件时钟都会强制产生一个中断，这个中断在 kernel&#x2F;trap.c 中的 usertrap() 中进行处理。只有在有定时器中断时，您才想要操作一个进程的警报“ticks”数；您需要类似这样的代码：    if(which_dev &#x3D;&#x3D; 2) … 只有当进程有未完成的定时器时，才调用警报函数。请注意，用户的警报函数的地址可能为 0（例如，在 user&#x2F;alarmtest.asm 中，periodic 位于地址 0）。 您需要修改 usertrap()，以便当一个进程的警报间隔到期时，用户进程执行处理函数。当 RISC-V 上的trap返回到用户空间时，是什么决定了用户空间代码恢复执行的指令地址？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/trap.c</span><br><span class="hljs-comment">// give up the CPU if this is a timer interrupt.</span><br><span class="hljs-keyword">if</span>(which_dev == <span class="hljs-number">2</span>) &#123;<br>    <span class="hljs-comment">// 如果间隔被设置</span><br>    <span class="hljs-keyword">if</span> (p-&gt;ainterval != <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-comment">// 每次计数加一</span><br>      p-&gt;ticksnum++;<br>      <span class="hljs-comment">// 当计数和间隔相同时，重置间隔为0，设置被执行函数</span><br>      <span class="hljs-keyword">if</span> (p-&gt;ticksnum == p-&gt;ainterval) &#123;<br>        p-&gt;ticksnum = <span class="hljs-number">0</span>;<br>        p-&gt;trapframe-&gt;epc = p-&gt;handler;<br>      &#125;<br>    &#125;<br>    yield();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_5.png" alt="image.png" class="lazyload"></li>
+</ul>
+<p><strong>Test1，2，3：恢复被中断的代码</strong>：</p>
+<p>在打印出“alarm!”后， alarmtest最终打印出“test1 failed”。为了解决这个问题，必须确保当警报处理程序完成后，控制权返回到用户程序最初被定时器中断的指令处。必须确保寄存器的内容恢复到中断时的值，以便在警报后用户程序可以不受干扰地继续执行。最后，应该在每次警报触发后“重新设置”警报计数器，以便定期调用处理程序。 用户警报处理程序在完成后必须调用 sigreturn 系统调用。可以查看 alarmtest.c 中的 periodic 作为示例，向 usertrap 和 sys_sigreturn 添加代码，使其协作以使用户进程在处理完警报后能够正确地恢复。 </p>
+<ul>
+<li><p>当定时器触发时，让 usertrap 在 struct proc 中保存足够的状态，以便 sigreturn 能够正确地返回到被中断的用户代码。我们要避免重复的调用alarm，就要在proc中定义一个alarmed，用于判断是否已经调用过，其次使用一个trapframe去保存寄存器。</p>
+</li>
+<li><pre><code class="c">// kernel/proc.h
+// proc结构体中加入新字段io
+int alarmed;   //是否已经调用过alarm
+struct trapframe *atrapframe;  //保存trapframe,结束后恢复
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"><br>- 需要和Test0中的操作一样，在allocproc和freeproc时对上述新变量进行初始化和释放（同之前一样）。<br><br>- 进一步修改`kernel/trap.c的usertrap`方法<br><br>  ```c<br>  // kernel/trap.c<br>  // give up the CPU if this is a timer interrupt.<br>  if(which_dev == 2) &#123;<br>      // 如果间隔被设置<br>      if (p-&gt;ainterval != 0 ) &#123;<br>        // 每次计数加一<br>        p-&gt;ticksnum++;<br>        // 当计数和间隔相同时且没有调用过，重置间隔为0<br>        if (p-&gt;ticksnum == p-&gt;ainterval &amp;&amp; p-&gt;alarmed !=1) &#123;<br>          // 用之前的方法保存trapframe<br>          memmove(p-&gt;atrapframe, p-&gt;trapframe, sizeof(struct trapframe));<br>          // 把调用标记置位1<br>          p-&gt;alarmed = 1;<br>          p-&gt;ticksnum = 0;<br>          p-&gt;trapframe-&gt;epc = p-&gt;handler;<br>        &#125;<br>      &#125;<br>      yield();<br>  &#125;<br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>最后我们要让调用alarm后恢复运行，即恢复之前的寄存器</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/proc.c</span><br>uint64<br><span class="hljs-title function_">sys_sigreturn</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span>;</span><br>  p = myproc();<br>  memmove(p-&gt;trapframe, p-&gt;atrapframe, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> trapframe));<br>  p-&gt;alarmed = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">return</span> p-&gt;trapfram-&gt;a0;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>编译运行测试，Test2通过，Test3提示<code>register a0 changed</code>，实验提示中要求确保恢复 a0。sigreturn 是一个系统调用，它的返回值会存储在 a0 中，那就应该修改返回值为之前的a0，否则返回0后就会更改原先trapframe中的a0。（上方代码已经改正）</p>
+</li>
+<li><img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_6.png" alt="image.png" class="lazyload"></li>
+</ul>
+
+	</article>
+
+	 
+    <div class="kira-post-copyright">
+        <strong>本文作者：</strong>YangYuchen<br>
+        <strong>本文链接：</strong><a href="https://www.littlewhite.site/xv6%E5%AD%A6%E4%B9%A0%EF%BC%8CLab4-240728/" title="https:&#x2F;&#x2F;www.littlewhite.site&#x2F;xv6学习，Lab4-240728&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;www.littlewhite.site&#x2F;xv6学习，Lab4-240728&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+  
+	<div class="kira-post-nav">
+		<nav class="post-nav">
+			
+		</nav>
+	</div>
+	
+	<div class="kira-post-meta kira-rainbow">
+		
+		
+			<a class="kirafont icon-tag-fill -none-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a>
+		
+	</div>
+	
+		<script src="/js/kira-code-copy.js"></script>
+	
+	
+	<div class="kira-post-footer">
+</div>
+	
+</div>
+
+				</div>
+			</div>
+			<div class="kira-right-column">
+	<a onclick="document.querySelector('#kira-top-header').scrollIntoView({behavior: 'smooth'});" class="kira-backtotop" aria-label="回到顶部" title="回到顶部">
+		<button class="mdui-fab mdui-ripple">
+			<i class="kirafont icon-caret-up"></i>
+		</button>
+	</a>
+</div>
+
+		</div>
+	</body>
+</html>

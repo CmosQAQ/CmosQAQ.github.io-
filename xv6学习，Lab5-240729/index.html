@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html 
+	lang="zh_CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+<link rel="stylesheet" href="/css/layout.css">
+
+		
+		<title> xv6学习，Lab5-Copy-on-Write Fork for xv6 -  Cmosite</title>
+		<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+		<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+		<!-- lazyload -->
+		<script src="https://unpkg.com/lazysizes@5.1.0/lazysizes.min.js"></script>
+		<!-- smooth-scrolling -->
+		<script src="https://unpkg.com/smooth-scrolling.js@1.0.0"></script>
+		<!-- highlight -->
+		<link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/atom-one-dark.min.css" />
+		<script src="//unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+		<!-- 预置 kiraicon -->
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		
+			<link rel="stylesheet" href="//at.alicdn.com/t/font_3299330_el19bsi97h8.css" crossorigin />
+		
+		<link rel="stylesheet" href="/lib/iconfont/iconfont.css" crossorigin />
+		<link
+			rel="shortcut icon"
+			href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			type="image/png"
+		/>
+		<link rel="stylesheet" href="/deps/css/APlayer.min.css">
+		
+		<script src="/deps/js/APlayer.min.js"></script>
+		<script src="/deps/js/Meting.min.js"></script>
+	<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<div
+			class="kira-background"
+			style="background-image: url('https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/bk2.jpg')"
+		></div>
+		<div class="kira-header">
+    <a
+        class="kira-drawer-button mdui-ripple"
+        title="导航栏"
+        onclick="document.querySelector('.kira-sidebar-modal').classList.add('show');document.querySelector('.kira-sidebar#sidebar').classList.add('show');"
+    >
+        <i class="kirafont icon-menu"></i>
+    </a>
+    <a href="/" title="Cmosite">
+        <img
+			src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+			alt="YangYuchen"
+		/>
+    </a>
+</div>
+		<div class="kira-body">
+			<div class="kira-sidebar" id="sidebar">
+	<div class="kira-avatar mdui-ripple">
+		<a target="_blank" rel="noopener" href="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png" title="YangYuchen">
+			<img
+				src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/%E8%83%8C%E6%99%AF%E5%8F%8A%E5%A4%B4%E5%83%8F%E7%AD%89%E4%B8%BB%E8%A6%81%E5%9B%BE%E7%89%87/head.png"
+				alt="YangYuchen"
+			/>
+		</a>
+	</div>
+	<div class="kira-count">
+		<div><span>文章</span>15</div>
+		<div><span>标签</span>4</div>
+		<div><span>分类</span>0</div>
+	</div>
+	<div class="kira-list">
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/"
+			title="回到首页"
+		>
+			<i
+				class="kirafont icon-home"
+			></i>
+			<div class="kira-list-item-content">回到首页</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/archive.html"
+			title="文章归档"
+		>
+			<i
+				class="kirafont icon-container"
+			></i>
+			<div class="kira-list-item-content">文章归档</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/about.html"
+			title="关于本人"
+		>
+			<i
+				class="kirafont icon-user"
+			></i>
+			<div class="kira-list-item-content">关于本人</div>
+		</a>
+		
+		<a
+			class="kira-list-item mdui-ripple false"
+			href="/friends.html"
+			title="我的朋友"
+		>
+			<i
+				class="kirafont icon-team"
+			></i>
+			<div class="kira-list-item-content">我的朋友</div>
+		</a>
+		
+	</div>
+	<aside id="kira-sidebar">
+		 <div class="kira-widget-wrap">
+	<div class="kira-widget kira-social">
+		<a
+			class="mdui-ripple"
+			href="/qqinfo.html"
+			target="_blank"
+			mdui-tooltip="{content: 'QQ'}"
+			style="
+				color: rgb(49, 174, 255);
+				background-color: rgba(49, 174, 255, .1);
+			"
+		>
+			<i
+				class="kirafont icon-QQ"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .15);
+			"
+		>
+			<i
+				class="kirafont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'Gitee'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-gitee"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://gitee.com/cmosqaq"
+			target="_blank"
+			mdui-tooltip="{content: 'Bili'}"
+			style="
+				color: rgb(165, 15, 15);
+				background-color: rgba(165, 15, 15, .15);
+			"
+		>
+			<i
+				class="kirafont icon-bilibili"
+			></i> </a
+		>
+	</div>
+</div>
+    
+<div class="kira-widget-wrap">
+	<div id="randomtagcloud" class="kira-widget tagcloud kira-rainbow"><a href="/tags/%E6%97%A0%E7%94%A8/" style="font-size: 15px;">无用</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 20px;">编程</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 15px;">英语</a></div>
+	
+</div>
+
+  
+<div class="kira-widget-wrap">
+	<h3 class="kira-widget-title">文章归档</h3>
+	<div class="kira-widget">
+		<ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">9</span></li></ul>
+	</div>
+</div>
+
+ 
+	</aside>
+	<div class="kira-copyright">
+		&copy; 2024
+		<a href="/">YangYuchen</a
+		>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> &
+		<!-- TODO: github 链接 -->
+		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
+		<br />
+		
+		
+	</div>
+</div>
+<div class="kira-sidebar-modal" id="sidebar-modal" onclick="(function(self) {
+	self.classList.remove('show');
+	document.querySelector('.kira-sidebar.show#sidebar').classList.remove('show');
+})(this)"></div>
+			<div class="kira-content">
+				<div id="kira-top-header"></div>
+				<div class="kira-main-content">
+					
+<link rel="stylesheet" href="/css/kira-image.css">
+
+<script src="/js/kira-image.js"></script>
+<div class="kira-image">
+    <div class="kira-image-modal">
+        <div class="kira-image-header">
+            <div class="kira-image-counter"></div>
+            <div class="kira-image-title"></div>
+            <div class="kira-image-operation">
+                <div class="kira-image-operation-button" id="kira-image-operation-button-zoom">
+                    <i class="kirafont icon-zoom-in"></i>
+                </div>
+                <div class="kira-image-operation-button" id="kira-image-operation-button-close">
+                    <i class="kirafont icon-close"></i>
+                </div>
+            </div>
+        </div>
+        <div class="kira-image-container">
+            <div class="kira-image-prev-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-left"></i>
+                </div>
+            </div>
+            <div class="kira-image-list">
+                <div class="kira-image-prev">
+                    <img />
+                </div>
+                <div class="kira-image-now">
+                    <img />
+                </div>
+                <div class="kira-image-next">
+                    <img />
+                </div>
+            </div>
+            <div class="kira-image-next-button-panel">
+                <div class="kira-image-exchange-button">
+                    <i class="kirafont icon-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kira-post">
+	<article>
+		
+		<div class="kira-post-cover">
+			<img
+				data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab1bg.png"
+				data-sizes="auto"
+				alt="xv6学习，Lab5-Copy-on-Write Fork for xv6"
+				class="lazyload kira-post-cover-image disabled-kira-image"
+			/>
+			<h1>xv6学习，Lab5-Copy-on-Write Fork for xv6</h1>
+		</div>
+		
+		<div class="kira-post-meta kira-rainbow" style="margin:10px 0!important;">
+			<a><i class="kirafont icon-calendar-fill"></i>2024年07月29日</a>
+			<a><i class="kirafont icon-areachart"></i>2.6k 字</a>
+			<a><i class="kirafont icon-time-circle-fill"></i>大概 12 分钟</a>
+		</div>
+		<h2><span id="五-lab5-copy-on-write-fork-for-xv6">五、Lab5: Copy-on-Write Fork for xv6</span></h2><p>虚拟内存提供了一种间接性：内核可以通过将页表项标记为无效或只读来拦截内存引用，从而导致页面错误，并且可以通过修改页表项来改变地址的含义。在 xv6 中，<code>fork()</code> 系统调用会将父进程的所有用户空间内存复制到子进程中。如果父进程很大，复制过程可能会花费很长时间。更糟糕的是，这项工作往往在很大程度上是浪费的：在子进程中，<code>fork()</code> 之后通常会跟着 <code>exec()</code>，它会丢弃复制的内存，而且通常大部分都不会被使用。另一方面，如果父进程和子进程都使用一个复制的页面，并且其中一个或两个进程对其进行写入操作，那么这个复制确实是有必要的。</p>
+<p>您在实现写时复制（COW）的 <code>fork()</code> 函数时的目标是，将物理内存页面的分配和复制推迟到实际需要这些副本时（如果需要的话）。 写时复制的 <code>fork()</code> 函数只为子进程创建一个页表，子进程的用户内存页表项（PTE）指向父进程的物理页面。写时复制的 <code>fork()</code> 函数将父进程和子进程中的所有用户 PTE 标记为只读。当任一进程试图写入这些写时复制页面中的一个时，CPU 将强制产生一个页面错误。内核的页面错误处理程序会检测到这种情况，为出错的进程分配一个物理内存页面，将原始页面的内容复制到新页面中，并修改出错进程中相关的 PTE，使其指向新页面，这次将 PTE 标记为可写。当页面错误处理程序返回时，用户进程将能够写入其页面副本。 写时复制的 <code>fork()</code> 函数使得释放实现用户内存的物理页面变得稍微复杂一些。一个给定的物理页面可能会被多个进程的页表引用，并且只有当最后一个引用消失时才应该被释放。</p>
+<h3><span id="1implement-copy-on-write-forkhard">1.Implement copy-on-write fork()</span></h3><p>您的任务是在 xv6 内核中实现上述写时复制的 fork 功能。为了帮助测试，提供了 user&#x2F;cowtest.c ，cowtest 会运行各种测试。</p>
+<ul>
+<li><p>根据提示，为每个PTE有记录其是否为COW映射，可以使用 RISC-V PTE 中的 RSW位来实现此目的。根据下图，RSW位为第8和第9位，我们只需要使用第8位，去riscv.h中进行定义。</p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab3_8.png" alt="image.png" class="lazyload">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/riscv.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PTE_RSW (1L &lt;&lt; 8)</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改 <code>uvmcopy()</code> 函数，将父进程的物理页映射到子进程中，而不是分配新的页面。对于设置了 <code>PTE_W</code> 的页面，清除子进程和父进程的页表项（PTE）中的 <code>PTE_W</code> 标志，这样这些页面就变成了一个“只读”页面，当触发写操作时就会进入中断。基本上有关页表的操作都在kernel&#x2F;vm.c中， 现在对<code>uvmcopy()</code>进行修改，如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/vm.c</span><br><br><span class="hljs-type">int</span><br><span class="hljs-title function_">uvmcopy</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> old, <span class="hljs-type">pagetable_t</span> new, uint64 sz)</span><br>&#123;<br>  <span class="hljs-type">pte_t</span> *pte;<br>  uint64 pa, i;<br>  uint flags;<br>  <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; sz; i += PGSIZE)&#123;<br>    <span class="hljs-keyword">if</span>((pte = walk(old, i, <span class="hljs-number">0</span>)) == <span class="hljs-number">0</span>)<br>      panic(<span class="hljs-string">&quot;uvmcopy: pte should exist&quot;</span>);<br>    <span class="hljs-keyword">if</span>((*pte &amp; PTE_V) == <span class="hljs-number">0</span>)<br>      panic(<span class="hljs-string">&quot;uvmcopy: page not present&quot;</span>);<br>    <span class="hljs-comment">// lab5-1,对PTE_W置位进行清除</span><br>    flags = PTE_FLAGS(*pte);<br>    pa = PTE2PA(*pte);<br>    <span class="hljs-comment">// PTE_RSW置位</span><br>    <span class="hljs-keyword">if</span>(*pte &amp; PTE_W)&#123;<br>      flags = (flags &amp; (~PTE_W)) | PTE_RSW;<br>      *pte = (*pte &amp; (~PTE_W)) | PTE_RSW;<br>    &#125;<br>    <span class="hljs-comment">// 这里原先直接分配了物理页面，我们把这一部分删除</span><br>    <span class="hljs-comment">// 由于引用数组位于kalloc.c，我们在kalloc.c中编写一个额外的方法</span><br>    <span class="hljs-comment">// 最后把页表映射给子进程</span><br>    <span class="hljs-keyword">if</span>(mappages(new, i, PGSIZE, (uint64)pa, flags) != <span class="hljs-number">0</span>)&#123;<br>      <span class="hljs-keyword">goto</span> err;<br>    &#125;<br>    <span class="hljs-comment">// 这里要把引用数组对应的值加一</span><br>    refarrayadd((uint64)pa);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br> err:<br>  uvmunmap(new, <span class="hljs-number">0</span>, i / PGSIZE, <span class="hljs-number">1</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>确保当最后一个指向某个物理页面的页表项引用消失时（且仅在此时），该物理页面才会被释放。一个好的方法是为每个物理页面维护一个“引用计数”，表示有多少个用户页表引用了该页面。当 <code>kalloc()</code> 分配一个页面时，将其引用计数设置为 1。当 <code>fork</code> 操作导致子进程共享该页面时，增加该页面的引用计数，当任何进程从其页表中删除该页面时，减少该页面的计数。只有当页面的引用计数为 0 时，<code>kfree()</code> 才应将该页面放回空闲列表。将这些计数保存在一个固定大小的整数数组中，为此定义了一个ref结构体和refarray数组。可以自由修改 <code>kalloc.c</code>（例如，<code>kalloc()</code> 和 <code>kfree()</code>）来维护引用计数。 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/kalloc.c</span><br><br><span class="hljs-comment">// 定义引用数组</span><br><span class="hljs-comment">// 数组大小是页面的个数，对应第三章页表中学习过的PHYSTOP - KERNBASE这部分地址</span><br><span class="hljs-comment">// 再除以页面大小就是数组的上限</span><br><span class="hljs-comment">// 除此之外还得定义这个数组的自旋锁</span><br><span class="hljs-comment">// 防止同一个页面被申请两次</span><br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">spinlock</span> <span class="hljs-title">lock</span>;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">run</span> *<span class="hljs-title">freelist</span>;</span><br>&#125; kmem;<br><br><span class="hljs-comment">// lab5-1</span><br><span class="hljs-comment">// 类似kmem，定义一个ref结构体</span><br><span class="hljs-comment">// 定义锁和引用数组</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">spinlock</span> <span class="hljs-title">reflock</span>;</span><br>  <span class="hljs-type">int</span> refarray[(PHYSTOP -KERNBASE) / PGSIZE];<br>&#125; ref;<br><br><span class="hljs-type">void</span><br><span class="hljs-title function_">kinit</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-comment">// 初始化刚才定义的</span><br>  initlock(&amp;kmem.lock, <span class="hljs-string">&quot;kmem&quot;</span>);<br>  initlock(&amp;ref.reflock, <span class="hljs-string">&quot;ref&quot;</span>);<br>  freerange(end, (<span class="hljs-type">void</span>*)PHYSTOP);<br>&#125;<br>  <br><span class="hljs-type">void</span><br><span class="hljs-title function_">kfree</span><span class="hljs-params">(<span class="hljs-type">void</span> *pa)</span><br>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">run</span> *<span class="hljs-title">r</span>;</span><br>    <span class="hljs-keyword">if</span>(((uint64)pa % PGSIZE) != <span class="hljs-number">0</span> || (<span class="hljs-type">char</span>*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)<br>        panic(<span class="hljs-string">&quot;kfree&quot;</span>);<br>     <span class="hljs-comment">// 如果引用数组大于1，我们不需要真正的释放这片内存，只需要把对应数组减一即可</span><br>    <span class="hljs-keyword">if</span>(ref.refarray[((uint64)pa -KERNBASE) / PGSIZE] &gt; <span class="hljs-number">1</span>)&#123;<br>        acquire(&amp;ref.reflock);<br>        ref.refarray[((uint64)pa -KERNBASE) / PGSIZE]--;<br>        release(&amp;ref.reflock);<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-built_in">memset</span>(pa, <span class="hljs-number">1</span>, PGSIZE);<br>        r = (<span class="hljs-keyword">struct</span> run*)pa;<br>        acquire(&amp;kmem.lock);<br>        r-&gt;next = kmem.freelist;<br>        kmem.freelist = r;<br>        release(&amp;kmem.lock);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 物理地址pa的引用数组对应值加1</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">refarrayadd</span><span class="hljs-params">(uint64 pa)</span>&#123;<br>    acquire(&amp;ref.reflock);<br>    ref.refarray[(pa - KERNBASE) / PGSIZE]+=<span class="hljs-number">1</span>;  <br>    release(&amp;ref.reflock);<br>&#125;<br><br><span class="hljs-comment">// 获取物理地址pa对应引用数组的值</span><br><span class="hljs-type">int</span><br><span class="hljs-title function_">getrefnum</span><span class="hljs-params">(uint64 pa)</span>&#123;<br>    <span class="hljs-type">int</span> num;<br>    acquire(&amp;ref.reflock);<br>    num = ref.refarray[(pa -KERNBASE) / PGSIZE];  <br>    release(&amp;ref.reflock);<br>    <span class="hljs-keyword">return</span> num;<br>&#125;<br><br><span class="hljs-type">void</span> *<br><span class="hljs-title function_">kalloc</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">run</span> *<span class="hljs-title">r</span>;</span><br>    acquire(&amp;kmem.lock);<br>    r = kmem.freelist;<br>    <span class="hljs-keyword">if</span>(r)&#123;<br>        kmem.freelist = r-&gt;next;<br>         <span class="hljs-comment">// lab5-1</span><br>         <span class="hljs-comment">// 引用数组对应值初始化为1</span><br>        acquire(&amp;ref.reflock);<br>        ref.refarray[((uint64)r -KERNBASE) / PGSIZE] = <span class="hljs-number">1</span>;  <br>        release(&amp;ref.reflock);<br>    &#125;<br>    release(&amp;kmem.lock);<br>    <span class="hljs-keyword">if</span>(r)<br>        <span class="hljs-built_in">memset</span>((<span class="hljs-type">char</span>*)r, <span class="hljs-number">5</span>, PGSIZE);<br>    <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span>*)r;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改 <code>usertrap()</code> 函数，使其能够识别页面错误。当对原本可写的COW页面发生写页面错误时，使用 <code>kalloc()</code> 分配一个新页面，将旧页面的内容复制到新页面，并将新页面安装到设置了 <code>PTE_W</code> 的 PTE 中。原本只读的页面（未映射 <code>PTE_W</code>，如文本段中的页面）应保持只读状态，并在父进程和子进程之间共享；试图写入这样页面的进程应被终止。在官方文档第49页中有如下说明:</p>
+<blockquote>
+<p>RISC-V 区分三种页面错误：加载页面错误（当加载指令无法转换其虚拟地址时）、存储页面错误（当存储指令无法转换其虚拟地址时）和指令页面错误（当程序计数器中的地址无法转换时）。scause 寄存器指示页面错误的类型，stval 寄存器包含无法转换的地址。</p>
+</blockquote>
+<p>也就是说，应该先判断SCAUSE寄存器的值，如下图所示，其存储发生中断的原因，是写页面时发生的错误，SCAUSE应为15。之后再从STVAL寄存器中取出无法转换的地址进行处理。</p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab5_1.png" alt="image.png" class="lazyload">
+
+<p>实现这一部分是这个实验的难点，kernel&#x2F;vm.c中是涉及虚拟地址相关的操作，我们在trap中获取了写页面失败时的地址，但不能直接对其进行操作，应该在vm.c中定义一个新的函数对这个地址进行处理，使用walk函数获取地址对应PTE，并判断其合法性以及是否为COW页，若为COW页就为其分配物理内存并更改引用数组。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/vm.c</span><br><br><span class="hljs-comment">// 这个函数用于处理传入的异常地址</span><br><span class="hljs-comment">// 返回-1说明出错，返回0说明正常                                                                                   </span><br><span class="hljs-type">int</span> <span class="hljs-title function_">tacklecowaddr</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable,uint64 addr)</span><br>&#123;<br>    <span class="hljs-comment">// 一定要确保页面对齐</span><br>    uint64 va = PGROUNDDOWN(addr);<br>    <span class="hljs-keyword">if</span>(va&gt;=MAXVA)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    <span class="hljs-comment">// 使用walk找到异常虚拟地址对应的PTE</span><br>    <span class="hljs-type">pte_t</span> *pte = walk(pagetable, va, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span>(pte==<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    uint64 flags = PTE_FLAGS(*pte);<br>    <span class="hljs-comment">//转换物理地址</span><br>    uint64 pa = PTE2PA(*pte);<br>    <span class="hljs-keyword">if</span>(pa==<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    <span class="hljs-comment">//如果是COW页面（PTE_RSW置位)</span><br>    <span class="hljs-keyword">if</span>(flags&amp;PTE_RSW)<br>    &#123;<br>         <span class="hljs-comment">// 用kalloc分配空间</span><br>        uint64 mem = (uint64)kalloc();<br>        <span class="hljs-keyword">if</span>(mem==<span class="hljs-number">0</span>)&#123;<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;tacklecowaddr : kalloc error!&quot;</span>);<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>         &#125;<br>         <span class="hljs-comment">// 用memmove将pa处的页面复制道新申请的地址处</span><br>        memmove((<span class="hljs-type">char</span> *)mem, (<span class="hljs-type">char</span> *)pa, PGSIZE);<br>         <span class="hljs-comment">// 解除原先的页面映射</span><br>        uvmunmap(pagetable, va, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>        flags = (flags | PTE_W) &amp; ~PTE_RSW;<br>         <span class="hljs-comment">// 为新的映射创建PTE</span><br>        <span class="hljs-keyword">if</span>(mappages(pagetable,va,PGSIZE,mem,flags)!=<span class="hljs-number">0</span>)<br>        &#123;<br>             <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;tacklecowaddr : mappage error!&quot;</span>);<br>            kfree((<span class="hljs-type">void</span> *)mem);<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// kernel/trap.c</span><br><br><span class="hljs-type">void</span><br><span class="hljs-title function_">usertrap</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> which_dev = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">if</span>((r_sstatus() &amp; SSTATUS_SPP) != <span class="hljs-number">0</span>)<br>    panic(<span class="hljs-string">&quot;usertrap: not from user mode&quot;</span>);<br>  w_stvec((uint64)kernelvec);<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br>  p-&gt;trapframe-&gt;epc = r_sepc();<br>  <span class="hljs-keyword">if</span>(r_scause() == <span class="hljs-number">8</span>)&#123;<br>    <span class="hljs-keyword">if</span>(killed(p))<br>      <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>    p-&gt;trapframe-&gt;epc += <span class="hljs-number">4</span>;<br>    intr_on();<br>    syscall();<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((which_dev = devintr()) != <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-comment">// ok</span><br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(r_scause() == <span class="hljs-number">15</span>)&#123;<br>      <span class="hljs-comment">// lab5-1</span><br>      <span class="hljs-comment">// COW页面发生写页面错误,先获取其错误的页面地址</span><br>      uint64 faultaddr = r_stval();<br>      <span class="hljs-comment">// 调用我们在vm.c中编写的tacklecowaddr函数处理地址</span><br>      <span class="hljs-keyword">if</span>(tacklecowaddr(p-&gt;pagetable,faultaddr) &lt; <span class="hljs-number">0</span> )&#123;<br>      setkilled(p);<br>      &#125;<br>  &#125;<span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;usertrap(): unexpected scause %d pid=%d\n&quot;</span>, r_scause(), p-&gt;pid);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;            sepc=%p stval=%p\n&quot;</span>, r_sepc(), r_stval());<br>    setkilled(p);<br>  &#125;<br>  <span class="hljs-keyword">if</span>(killed(p))<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>  <span class="hljs-keyword">if</span>(which_dev == <span class="hljs-number">2</span>)<br>    yield();<br>  usertrapret();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改 <code>copyout()</code> 函数，使其在遇到写时复制页面时使用与页面错误处理相同的方案。除此之外要把新定义的几个函数写进defs.h里。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span><br><span class="hljs-title function_">copyout</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable, uint64 dstva, <span class="hljs-type">char</span> *src, uint64 len)</span><br>&#123;<br>  uint64 n, va0, pa0;<br>  <span class="hljs-type">pte_t</span> *pte;<br><br>  <span class="hljs-keyword">while</span>(len &gt; <span class="hljs-number">0</span>)&#123;<br>    va0 = PGROUNDDOWN(dstva);<br>    <span class="hljs-keyword">if</span>(va0 &gt;= MAXVA)<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    <span class="hljs-comment">// lab5-1</span><br>    <span class="hljs-keyword">if</span>(tacklecowaddr(pagetable,va0)&lt;<span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;copyout : tacklecowaddr error!&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    pa0 = PTE2PA(*pte);<br>    n = PGSIZE - (dstva - va0);<br>    <span class="hljs-keyword">if</span>(n &gt; len)<br>      n = len;<br>    memmove((<span class="hljs-type">void</span> *)(pa0 + (dstva - va0)), src, n);<br><br>    len -= n;<br>    src += n;<br>    dstva = va0 + PGSIZE;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>解决各种编译报错后运行qemu，发现仍有各种报错，解决各种指针问题后无报错信息。但运行 cowtest 测试后仍然报错，发现了kfree 和 tacklecowaddr 中出现了错误。</p>
+</li>
+<li><p>上方代码已修改。</p>
+<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab5_2.png" alt="image.png" class="lazyload"></li>
+</ul>
+
+	</article>
+
+	 
+    <div class="kira-post-copyright">
+        <strong>本文作者：</strong>YangYuchen<br>
+        <strong>本文链接：</strong><a href="https://www.littlewhite.site/xv6%E5%AD%A6%E4%B9%A0%EF%BC%8CLab5-240729/" title="https:&#x2F;&#x2F;www.littlewhite.site&#x2F;xv6学习，Lab5-240729&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;www.littlewhite.site&#x2F;xv6学习，Lab5-240729&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+  
+	<div class="kira-post-nav">
+		<nav class="post-nav">
+			
+		</nav>
+	</div>
+	
+	<div class="kira-post-meta kira-rainbow">
+		
+		
+			<a class="kirafont icon-tag-fill -none-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a>
+		
+	</div>
+	
+		<script src="/js/kira-code-copy.js"></script>
+	
+	
+	<div class="kira-post-footer">
+</div>
+	
+</div>
+
+				</div>
+			</div>
+			<div class="kira-right-column">
+	<a onclick="document.querySelector('#kira-top-header').scrollIntoView({behavior: 'smooth'});" class="kira-backtotop" aria-label="回到顶部" title="回到顶部">
+		<button class="mdui-fab mdui-ripple">
+			<i class="kirafont icon-caret-up"></i>
+		</button>
+	</a>
+</div>
+
+		</div>
+	</body>
+</html>
