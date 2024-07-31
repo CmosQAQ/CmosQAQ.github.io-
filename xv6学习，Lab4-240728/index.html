@@ -293,7 +293,7 @@
 <li>SRET（从陷阱返回，指令会将 sepc 复制到程序计数器中，内核可以通过写入 sepc 来控制 sret 的返回位置）。</li>
 <li>SSTATUS：SSTATUS 中的 SIE 位控制设备中断是否启用。如果内核清除 SIE，RISC-V 会推迟设备中断，直到内核设置 SIE。SPP 位表示陷阱是来自用户模式还是监督模式，并控制 sret 返回的模式。</li>
 </ul>
-<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_1.png" alt="image.png" class="lazyload">
+<img data-fancybox="gallery" data-sizes="auto" data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab4_1.png" alt="image.png" class="lazyload">
 
 <p>切换到监督者模式后才能处理上述寄存器，在用户模式下无法读取或写入它们，除此之外监督者模式可以对PTE_U没有置位的进行处理，而用户模式就只能读取PTE_U置位的PTE，需要注意的是监督者模式并不能对任意的物理内存进行修改。</p>
 </li>
@@ -335,7 +335,7 @@
 <ul>
 <li><p>哪些寄存器包含函数的参数？例如，在 <code>main</code> 函数调用 <code>printf</code> 时，哪个寄存器保存着 13？</p>
 <p>如下图，使用gdb在printf处设置断点并查看寄存器信息，可知在a2中存着13。</p>
-<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_2.png" alt="image.png" class="lazyload">
+<img data-fancybox="gallery" data-sizes="auto" data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab4_2.png" alt="image.png" class="lazyload">
 </li>
 <li><p>在 <code>main</code> 函数的汇编代码中，对函数 <code>f</code> 的调用在哪里？对 <code>g</code> 的调用在哪里？（提示：编译器可能会内联函数。）</p>
 <p>参考提示，查看call.asm汇编代码：</p>
@@ -366,7 +366,7 @@
 <li><p>在以下代码中，在 <code>&#39;y=&#39;</code> 之后会打印什么？（注意：答案不是一个特定的值）为什么会这样？</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;x=%d y=%d&quot;</span>, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
 
-<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_3.png" alt="image.png" class="lazyload">
+<img data-fancybox="gallery" data-sizes="auto" data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab4_3.png" alt="image.png" class="lazyload">
 
 <p>使用gdb查看寄存器信息，如图所示，打印的是a2寄存器中的数，但是并没有给printf的第二个格式化输出，所以不是一个特定的值。</p>
 </li>
@@ -389,7 +389,7 @@
 <p>您的 <code>backtrace()</code> 需要一种方法来识别它已经看到了最后一个栈帧，并应该停止。一个有用的事实是，为每个内核栈分配的内存由一个单一的页面对齐的页面组成，因此给定栈的所有栈帧都在同一页面上。您可以使用 <code>PGROUNDDOWN(fp)</code>（见 <code>kernel/riscv.h</code>）来确定帧指针所指的页面。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// lab4-2</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">backtrace</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;backtrace:\n&quot;</span>);<br>  <span class="hljs-comment">// 获取当前函数的stackframe</span><br>  uint64 fp = r_fp();<br>  <span class="hljs-comment">// 获取当前页面的栈底位置</span><br>  uint64 pageAddr = PGROUNDDOWN(fp);<br>  <span class="hljs-comment">// 所有stackframe占用的一个页面，最大地址不会超过+PGSIZE</span><br>  <span class="hljs-keyword">while</span>(fp &lt; pageAddr + PGSIZE)<br>  &#123;<br>    <span class="hljs-comment">// 上级函数的返回地址</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%p\n&quot;</span>, *(uint64*)(fp<span class="hljs-number">-8</span>));<br>    <span class="hljs-comment">// 上级函数的stackframe</span><br>    fp = *(uint64*)(fp<span class="hljs-number">-16</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_4.png" alt="image.png" class="lazyload"></li>
+<img data-fancybox="gallery" data-sizes="auto" data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab4_4.png" alt="image.png" class="lazyload"></li>
 </ul>
 <h3><span id="3alarm-hard">3.Alarm ()</span></h3><blockquote>
 <p>这是一个复杂的实验，为 xv6 添加一个功能，当一个进程使用 CPU 时间时，定期向该进程发出警报。</p>
@@ -409,7 +409,7 @@
 <li><p>每一个“ticks”，硬件时钟都会强制产生一个中断，这个中断在 kernel&#x2F;trap.c 中的 usertrap() 中进行处理。只有在有定时器中断时，您才想要操作一个进程的警报“ticks”数；您需要类似这样的代码：    if(which_dev &#x3D;&#x3D; 2) … 只有当进程有未完成的定时器时，才调用警报函数。请注意，用户的警报函数的地址可能为 0（例如，在 user&#x2F;alarmtest.asm 中，periodic 位于地址 0）。 您需要修改 usertrap()，以便当一个进程的警报间隔到期时，用户进程执行处理函数。当 RISC-V 上的trap返回到用户空间时，是什么决定了用户空间代码恢复执行的指令地址？</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// kernel/trap.c</span><br><span class="hljs-comment">// give up the CPU if this is a timer interrupt.</span><br><span class="hljs-keyword">if</span>(which_dev == <span class="hljs-number">2</span>) &#123;<br>    <span class="hljs-comment">// 如果间隔被设置</span><br>    <span class="hljs-keyword">if</span> (p-&gt;ainterval != <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-comment">// 每次计数加一</span><br>      p-&gt;ticksnum++;<br>      <span class="hljs-comment">// 当计数和间隔相同时，重置间隔为0，设置被执行函数</span><br>      <span class="hljs-keyword">if</span> (p-&gt;ticksnum == p-&gt;ainterval) &#123;<br>        p-&gt;ticksnum = <span class="hljs-number">0</span>;<br>        p-&gt;trapframe-&gt;epc = p-&gt;handler;<br>      &#125;<br>    &#125;<br>    yield();<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_5.png" alt="image.png" class="lazyload"></li>
+<li><img data-fancybox="gallery" data-sizes="auto" data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab4_5.png" alt="image.png" class="lazyload"></li>
 </ul>
 <p><strong>Test1，2，3：恢复被中断的代码</strong>：</p>
 <p>在打印出“alarm!”后， alarmtest最终打印出“test1 failed”。为了解决这个问题，必须确保当警报处理程序完成后，控制权返回到用户程序最初被定时器中断的指令处。必须确保寄存器的内容恢复到中断时的值，以便在警报后用户程序可以不受干扰地继续执行。最后，应该在每次警报触发后“重新设置”警报计数器，以便定期调用处理程序。 用户警报处理程序在完成后必须调用 sigreturn 系统调用。可以查看 alarmtest.c 中的 periodic 作为示例，向 usertrap 和 sys_sigreturn 添加代码，使其协作以使用户进程在处理完警报后能够正确地恢复。 </p>
@@ -428,7 +428,7 @@ struct trapframe *atrapframe;  //保存trapframe,结束后恢复
 </li>
 <li><p>编译运行测试，Test2通过，Test3提示<code>register a0 changed</code>，实验提示中要求确保恢复 a0。sigreturn 是一个系统调用，它的返回值会存储在 a0 中，那就应该修改返回值为之前的a0，否则返回0后就会更改原先trapframe中的a0。（上方代码已经改正）</p>
 </li>
-<li><img data-fancybox="gallery" data-sizes="auto" data-src="E:/xv6/学习文档/image/lab4_6.png" alt="image.png" class="lazyload"></li>
+<li><img data-fancybox="gallery" data-sizes="auto" data-src="https://cmos-1314661969.cos.ap-nanjing.myqcloud.com/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/lab4_6.png" alt="image.png" class="lazyload"></li>
 </ul>
 
 	</article>
